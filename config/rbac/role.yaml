@@ -1,0 +1,32 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: manager-role
+rules:
+- apiGroups:
+  - apps.com.coding-monkey
+  resources:
+  - containerdeployments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps.com.coding-monkey
+  resources:
+  - containerdeployments/finalizers
+  verbs:
+  - update
+- apiGroups:
+  - apps.com.coding-monkey
+  resources:
+  - containerdeployments/status
+  verbs:
+  - get
+  - patch
+  - update

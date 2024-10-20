@@ -1,0 +1,10 @@
+apiVersion: apps.com.coding-monkey/v1
+kind: ContainerDeployment
+metadata:
+  name: first-deployment
+  namespace: default
+spec:
+  image: nginx:latest
+  cpu: "500m"
+  memory: "256Mi"
+  port: 80
