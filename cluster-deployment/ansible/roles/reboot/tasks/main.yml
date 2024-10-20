@@ -1,0 +1,9 @@
+---
+- name: Update packages
+  ansible.builtin.apt:
+    upgrade: dist
+    update_cache: true
+    install_recommends: false
+
+- name: Reboot system
+  ansible.builtin.reboot:

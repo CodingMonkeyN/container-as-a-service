@@ -1,0 +1,11 @@
+apiVersion: apps.com.coding-monkey/v1
+kind: ContainerDeployment
+metadata:
+  name: hello-world2
+spec:
+  image: nmatsui/hello-world-api
+  namespace: hello-world2
+  memory: "64Mi"
+  cpu: "250m"
+  exposed-port: 80
+  application-port: 3000

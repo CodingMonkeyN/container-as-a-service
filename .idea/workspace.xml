@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a8778f82-01df-447e-b6f1-009901c34411" name="Changes" comment="finish adjustments">
+      <change afterPath="$PROJECT_DIR$/Api/.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/.idea/.idea.Api/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/.idea/.idea.ContainerAsAService/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/.idea/.idea.ContainerAsAService/.idea/.name" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/.idea/.idea.ContainerAsAService/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/.idea/.idea.ContainerAsAService/.idea/git_toolbox_blame.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/.idea/.idea.ContainerAsAService/.idea/indexLayout.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/.idea/.idea.ContainerAsAService/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/ContainerAsAService.sln" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/Directory.Build.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/Directory.Packages.props" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/Pods/Queries/GetLogs/GetLogs.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/Pods/Queries/GetPodLogs/GetPodLogs.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/Pods/Queries/GetPods/GetPods.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/build.cake" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/global.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/abbreviations.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/ai/cognitiveservices.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/ai/hub-dependencies.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/ai/hub.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/ai/project.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/config/configstore.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/database/cosmos/cosmos-account.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/database/cosmos/mongo/cosmos-mongo-account.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/database/cosmos/mongo/cosmos-mongo-db.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/database/cosmos/sql/cosmos-sql-account.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/database/cosmos/sql/cosmos-sql-db.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/database/cosmos/sql/cosmos-sql-role-assign.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/database/cosmos/sql/cosmos-sql-role-def.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/database/mysql/flexibleserver.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/database/postgresql/flexibleserver.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/database/sqlserver/sqlserver.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/gateway/apim.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/host/ai-environment.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/host/aks-agent-pool.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/host/aks-managed-cluster.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/host/aks.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/host/appservice-appsettings.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/host/appservice.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/host/appserviceplan.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/host/container-app-upsert.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/host/container-app.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/host/container-apps-environment.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/host/container-apps.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/host/container-registry.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/host/functions.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/host/staticwebapp.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/monitor/applicationinsights-dashboard.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/monitor/applicationinsights.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/monitor/loganalytics.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/monitor/monitoring.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/networking/cdn-endpoint.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/networking/cdn-profile.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/networking/cdn.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/search/search-services.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/security/aks-managed-cluster-access.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/security/configstore-access.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/security/keyvault-access.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/security/keyvault-secret.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/security/keyvault.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/security/registry-access.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/security/role.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/storage/storage-account.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/core/testing/loadtesting.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/main.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/main.parameters.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/infra/services/web.bicep" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/Application.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/Common/Behaviours/PerformanceBehaviour.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/Common/Behaviours/UnhandledExceptionBehaviour.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/Common/Behaviours/ValidationBehaviour.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/Common/Exceptions/ForbiddenAccessException.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/Common/Exceptions/ValidationException.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/Common/Interfaces/IContainerDeploymentService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/Common/Interfaces/IKubernetesService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/ContainerDeployment/Commands/CreateContainerDeployment/CreateContainerDeployment.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/ContainerDeployment/Commands/UpdateContainerDeployment/UpdateContainerDeployment.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/ContainerDeployment/Queries/GetContainerDeployments/ContainerDeploymentDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/ContainerDeployment/Queries/GetContainerDeployments/GetContainerDeployments.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/DependencyInjection.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/GlobalUsings.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/Models/CreateContainerDeployment.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/Models/UpdateContainerDeployment.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/Namespace/Queries/GetClusterNamespaces/GetClusterNamespaces.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/Pods/Queries/GetPodLogs/GetPodLogs.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/Pods/Queries/GetPods/GetPods.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Application/Pods/Queries/GetPods/PodDto.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Domain/Domain.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Domain/GlobalUsings.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Infrastructure/DependencyInjection.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Infrastructure/GlobalUsings.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Infrastructure/Infrastructure.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Infrastructure/Models/ContainerDeploymentContract.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Infrastructure/Services/ContainerDeploymentService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Infrastructure/Services/KubernetesService.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Infrastructure/Utils/StatusUtil.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/DependencyInjection.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/Endpoints/ContainerDeployment.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/Endpoints/Namespace.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/Endpoints/Pods.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/GlobalUsings.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/Infrastructure/CustomExceptionHandler.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/Infrastructure/EndpointGroupBase.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/Infrastructure/IEndpointRouteBuilderExtensions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/Infrastructure/MethodInfoExtensions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/Infrastructure/WebApplicationExtensions.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/Program.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/Properties/launchSettings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/Web.csproj" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/Web.http" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/appsettings.Development.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/appsettings.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/src/Web/wwwroot/favicon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/.dockerignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/Api/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/.idea/.idea.Api/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/.idea/.idea.Api/.idea/encodings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/.idea/.idea.Api/.idea/git_toolbox_blame.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/.idea/.idea.Api/.idea/indexLayout.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/.idea/.idea.Api/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Api.csproj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Api.http" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Api.sln" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Api.sln.DotSettings.user" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Contracts/ContainerDeployment.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Dockerfile" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Models/ContainerDeploymentResponse.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Models/CreateDeploymentRequest.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Models/PodResponse.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Program.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Properties/launchSettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Utils/Utils.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/appsettings.Development.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/appsettings.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Api.csproj.nuget.dgspec.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Api.csproj.nuget.g.props" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Api.csproj.nuget.g.targets" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfoInputs.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.GlobalUsings.g.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.assets.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.csproj.AssemblyReference.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/project.assets.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/project.nuget.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/project.packagespec.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/rider.project.model.nuget.info" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/rider.project.restore.info" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/services/api.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/api.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kubernetes/build-and-deploy.sh" beforeDir="false" afterPath="$PROJECT_DIR$/kubernetes/build-and-deploy.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kubernetes/kubernetes-setup/cert-manager/certificates/production/codingmonkey-cloud.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kubernetes/kubernetes-setup/cert-manager/certificates/staging/codingmonkey-cloud.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kubernetes/kubernetes-setup/cert-manager/issuers/lets-encrypt-production.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/kubernetes/kubernetes-setup/cert-manager/issuers/lets-encrypt-production.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kubernetes/kubernetes-setup/cert-manager/issuers/lets-encrypt-staging.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/kubernetes/kubernetes-setup/cert-manager/issuers/lets-encrypt-staging.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kubernetes/kubernetes-setup/cert-manager/values.yaml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/kubernetes/test/sec_test/test.sh" beforeDir="false" afterPath="$PROJECT_DIR$/kubernetes/test/sec_test/test.sh" afterDir="false" />
+    </list>
+    <list id="f4ac63b7-cc66-4d06-b3c4-ffdb20f510af" name="Changes by flori" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" url="file:///usr/local/go" />
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="cluster_deployment" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;CodingMonkeyN&quot;
+  }
+}</component>
+  <component name="GitToolBoxStore">
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="main" />
+                    <option name="lastUsedInstant" value="1736872162" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="portal" />
+                    <option name="lastUsedInstant" value="1736347582" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
+  </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/CodingMonkeyN/container-as-a-service.git&quot;,
+    &quot;accountId&quot;: &quot;3236060b-dff0-4916-857e-b8f1302c191b&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/go/pkg/mod/k8s.io/api@v0.31.0/core/v1/types.go" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2nhhrkjHslr06uKW75TQ46dsSsd" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Go Build.go build github.com/CodingMonkeyN/container-as-a-service.executor&quot;: &quot;Debug&quot;,
+    &quot;Go Build.go build github.com/CodingMonkeyN/container-as-a-service/cmd.executor&quot;: &quot;Debug&quot;,
+    &quot;Go Test.go test container-as-a-service.executor&quot;: &quot;Debug&quot;,
+    &quot;Go Test.go test controller.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/CodingMonkey&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/kubernetes-setup/cert-manager" />
+      <recent name="$PROJECT_DIR$/kubernetes-setup/ingress" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/config/samples" />
+      <recent name="$PROJECT_DIR$/kubernetes-setup/cert-manager/issuers" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/kubernetes-setup/cert-manager" />
+      <recent name="$PROJECT_DIR$/kubernetes-setup/ingress" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Go Build.go build github.com/CodingMonkeyN/container-as-a-service/cmd">
+    <configuration name="go build github.com/CodingMonkeyN/container-as-a-service/cmd" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="container-as-a-service" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <package value="github.com/CodingMonkeyN/container-as-a-service" />
+      <directory value="$PROJECT_DIR$/kubernetes/cmd" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go test controller" type="GoTestRunConfiguration" factoryName="Go Test" nameIsGenerated="true">
+      <module name="container-as-a-service" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <package value="github.com/CodingMonkeyN/container-as-a-service" />
+      <directory value="$PROJECT_DIR$/internal/controller" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Go Build.go build github.com/CodingMonkeyN/container-as-a-service/cmd" />
+      <item itemvalue="Go Test.go test controller" />
+    </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-gosdk-5df93f7ad4aa-df9ad98b711f-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-242.23339.24" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-GO-242.23339.24" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="GitHub.CommitStatus" />
+      </list>
+    </option>
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="first commit" />
+    <MESSAGE value="bissel getestet" />
+    <MESSAGE value="rename demo deployment" />
+    <MESSAGE value="ingress setup" />
+    <MESSAGE value="add pvc" />
+    <MESSAGE value="add week2 demo" />
+    <MESSAGE value="add cert-manager setup" />
+    <MESSAGE value="finish cert-manager and ingress setup" />
+    <MESSAGE value="prepare demo" />
+    <MESSAGE value="disable service links" />
+    <MESSAGE value="override default kubernetes environments" />
+    <MESSAGE value="add config for min and max env" />
+    <MESSAGE value="change pull policy" />
+    <MESSAGE value="fix build to always use linux/amd64" />
+    <MESSAGE value="reactivate runtime class" />
+    <MESSAGE value="try envtest" />
+    <MESSAGE value="add missing cluster role configs" />
+    <MESSAGE value="add integration tests" />
+    <MESSAGE value="add test to check the correct envs" />
+    <MESSAGE value="update resources when doing an update" />
+    <MESSAGE value="adjust configuration" />
+    <MESSAGE value="finish adjustments" />
+    <MESSAGE value="set fixed port" />
+    <option name="LAST_COMMIT_MESSAGE" value="set fixed port" />
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+</project>

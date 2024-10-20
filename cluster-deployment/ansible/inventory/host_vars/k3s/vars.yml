@@ -1,0 +1,4 @@
+---
+ansible_host: 185.113.125.70
+ansible_connetion: ssh
+ansible_user: k3suser

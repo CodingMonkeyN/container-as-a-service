@@ -1,0 +1,25 @@
+---
+- name: install required packages
+  ansible.builtin.apt:
+    pkg:
+      - apt-transport-https
+    state: latest
+    update_cache: true
+    install_recommends: false
+
+- name: convert keyring file
+  ansible.builtin.shell: curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+
+- name: install helm repo
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main"
+    state: present
+    filename: helm
+
+- name: install helm
+  ansible.builtin.apt:
+    pkg:
+      - helm
+    state: latest
+    update_cache: true
+    install_recommends: false

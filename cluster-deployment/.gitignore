@@ -1,0 +1,3 @@
+# ansible
+.venv/
+**/k3s.yaml
