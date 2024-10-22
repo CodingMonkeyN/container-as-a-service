@@ -49,7 +49,6 @@ func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
-	// Create a Deployment based on the CRD spec
 	deploy := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      containerDeployment.Name,
@@ -93,6 +92,7 @@ func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.
 	}
 
 	if err := r.Create(ctx, deploy); err != nil {
+
 		return ctrl.Result{}, err
 	}
 

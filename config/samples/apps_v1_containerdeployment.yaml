@@ -1,9 +1,9 @@
 apiVersion: apps.com.coding-monkey/v1
 kind: ContainerDeployment
 metadata:
-  labels:
-    app.kubernetes.io/name: container-as-a-service
-    app.kubernetes.io/managed-by: kustomize
   name: containerdeployment-sample
 spec:
-  # TODO(user): Add fields here
+  image: nginx:latest
+  memory: "64Mi"
+  cpu: "250m"
+  port: 80
