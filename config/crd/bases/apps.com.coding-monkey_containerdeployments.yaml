@@ -48,6 +48,8 @@ spec:
                 type: string
               memory:
                 type: string
+              namespace:
+                type: string
               port:
                 format: int32
                 type: integer

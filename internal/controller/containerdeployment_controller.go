@@ -18,11 +18,15 @@ package controller
 
 import (
 	"context"
+
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
+
+	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/utils/pointer"
+	logf "sigs.k8s.io/controller-runtime/pkg/log"
 
 	containerv1 "github.com/CodingMonkeyN/container-as-a-service/api/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -43,16 +47,32 @@ type ContainerDeploymentReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.19.0/pkg/reconcile
 func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+	log := logf.FromContext(ctx)
 	// Fetch the ContainerDeployment instance
 	var containerDeployment containerv1.ContainerDeployment
 	if err := r.Get(ctx, req.NamespacedName, &containerDeployment); err != nil {
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
+	if containerDeployment.Spec.Namespace != "" {
+		namespace := &corev1.Namespace{
+			ObjectMeta: metav1.ObjectMeta{
+				Name: containerDeployment.Spec.Namespace,
+			},
+		}
+
+		log.Info("Creating namespace")
+		err := r.Client.Create(ctx, namespace)
+		if err != nil && !errors.IsAlreadyExists(err) {
+			return ctrl.Result{}, err
+		}
+		log.Info("Namespace created")
+	}
+
 	deploy := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      containerDeployment.Name,
-			Namespace: containerDeployment.Namespace,
+			Namespace: containerDeployment.Spec.Namespace,
 		},
 		Spec: appsv1.DeploymentSpec{
 			Replicas: pointer.Int32Ptr(1),
@@ -70,14 +90,15 @@ func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.
 				Spec: corev1.PodSpec{
 					Containers: []corev1.Container{
 						{
-							Name:  "app-container",
+							Name:  containerDeployment.Name,
 							Image: containerDeployment.Spec.Image,
+
 							Ports: []corev1.ContainerPort{
 								{
 									ContainerPort: containerDeployment.Spec.Port,
 								},
 							},
-							//	Env: convertEnvMapToEnvVars(containerDeployment.Spec.EnvironmentVars),
+							Env: convertEnvMap(containerDeployment.Spec.EnvironmentVars),
 							Resources: corev1.ResourceRequirements{
 								Limits: corev1.ResourceList{
 									corev1.ResourceCPU:    resource.MustParse(containerDeployment.Spec.CPU),
@@ -92,7 +113,6 @@ func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.
 	}
 
 	if err := r.Create(ctx, deploy); err != nil {
-
 		return ctrl.Result{}, err
 	}
 
@@ -104,4 +124,13 @@ func (r *ContainerDeploymentReconciler) SetupWithManager(mgr ctrl.Manager) error
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&containerv1.ContainerDeployment{}).
 		Complete(r)
+}
+
+func convertEnvMap(envMap map[string]string) []corev1.EnvVar {
+	var envVars []corev1.EnvVar
+	for name, value := range envMap {
+		envVars = append(envVars, corev1.EnvVar{Name: name, Value: value})
+	}
+
+	return envVars
 }
