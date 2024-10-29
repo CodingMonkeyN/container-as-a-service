@@ -22,6 +22,7 @@ import (
 
 type ContainerDeploymentSpec struct {
 	Image           string            `json:"image"`
+	Namespace       string            `json:"namespace,omitempty"`
 	CPU             string            `json:"cpu,omitempty"`
 	Memory          string            `json:"memory,omitempty"`
 	Port            int32             `json:"port"`
