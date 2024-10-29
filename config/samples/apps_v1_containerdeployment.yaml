@@ -1,10 +1,10 @@
 apiVersion: apps.com.coding-monkey/v1
 kind: ContainerDeployment
 metadata:
-  name: containerdeployment-sample
+  name: weeky-demo-nginx
 spec:
   image: nginx:latest
-  #namespace: test
+  namespace: weekly-demo
   memory: "64Mi"
   cpu: "250m"
   port: 80
