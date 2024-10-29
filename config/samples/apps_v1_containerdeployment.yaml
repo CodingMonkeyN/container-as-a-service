@@ -4,7 +4,7 @@ metadata:
   name: containerdeployment-sample
 spec:
   image: nginx:latest
-  namespace: test
+  #namespace: test
   memory: "64Mi"
   cpu: "250m"
   port: 80

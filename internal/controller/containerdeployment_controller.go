@@ -26,7 +26,6 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/utils/pointer"
-	logf "sigs.k8s.io/controller-runtime/pkg/log"
 
 	containerv1 "github.com/CodingMonkeyN/container-as-a-service/api/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -47,7 +46,7 @@ type ContainerDeploymentReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.19.0/pkg/reconcile
 func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-	log := logf.FromContext(ctx)
+
 	// Fetch the ContainerDeployment instance
 	var containerDeployment containerv1.ContainerDeployment
 	if err := r.Get(ctx, req.NamespacedName, &containerDeployment); err != nil {
@@ -61,12 +60,12 @@ func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.
 			},
 		}
 
-		log.Info("Creating namespace")
 		err := r.Client.Create(ctx, namespace)
 		if err != nil && !errors.IsAlreadyExists(err) {
 			return ctrl.Result{}, err
 		}
-		log.Info("Namespace created")
+	} else {
+		containerDeployment.Spec.Namespace = "default"
 	}
 
 	deploy := &appsv1.Deployment{
