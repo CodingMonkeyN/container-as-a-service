@@ -18,9 +18,14 @@ package controller
 
 import (
 	"context"
+	"github.com/google/uuid"
+	"k8s.io/apimachinery/pkg/util/intstr"
+	"log"
+	"strings"
 
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
+	networkingv1 "k8s.io/api/networking/v1"
 
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -53,6 +58,51 @@ func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
+	namespaceError := createNamespace(r, containerDeployment, ctx)
+	if namespaceError != nil {
+		log.Println("Error creating namespace")
+		return ctrl.Result{}, namespaceError
+	}
+
+	deploymentError := createDeployment(r, containerDeployment, ctx)
+	if deploymentError != nil {
+		return ctrl.Result{}, deploymentError
+	}
+
+	backendPortName, serviceError := createService(r, containerDeployment, ctx)
+	if serviceError != nil {
+		log.Println("Error creating service")
+		return ctrl.Result{}, serviceError
+	}
+
+	ingressError := createIngress(backendPortName, r, containerDeployment, ctx)
+	if ingressError != nil {
+		log.Println("Error creating ingress")
+		return ctrl.Result{}, ingressError
+	}
+
+	return ctrl.Result{}, nil
+}
+
+// SetupWithManager sets up the controller with the Manager.
+func (r *ContainerDeploymentReconciler) SetupWithManager(mgr ctrl.Manager) error {
+	return ctrl.NewControllerManagedBy(mgr).
+		For(&containerv1.ContainerDeployment{}).
+		Complete(r)
+}
+
+func convertEnvMap(envMap map[string]string) []corev1.EnvVar {
+	var envVars []corev1.EnvVar
+	for name, value := range envMap {
+		envVars = append(envVars, corev1.EnvVar{Name: name, Value: value})
+	}
+
+	return envVars
+}
+
+func createNamespace(r *ContainerDeploymentReconciler,
+	containerDeployment containerv1.ContainerDeployment,
+	ctx context.Context) error {
 	if containerDeployment.Spec.Namespace != "" {
 		namespace := &corev1.Namespace{
 			ObjectMeta: metav1.ObjectMeta{
@@ -62,12 +112,19 @@ func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.
 
 		err := r.Client.Create(ctx, namespace)
 		if err != nil && !errors.IsAlreadyExists(err) {
-			return ctrl.Result{}, err
+			return err
 		}
 	} else {
 		containerDeployment.Spec.Namespace = "default"
 	}
 
+	return nil
+}
+
+func createDeployment(r *ContainerDeploymentReconciler,
+	containerDeployment containerv1.ContainerDeployment,
+	ctx context.Context,
+) error {
 	deploy := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      containerDeployment.Name,
@@ -91,10 +148,9 @@ func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.
 						{
 							Name:  containerDeployment.Name,
 							Image: containerDeployment.Spec.Image,
-
 							Ports: []corev1.ContainerPort{
 								{
-									ContainerPort: containerDeployment.Spec.Port,
+									ContainerPort: containerDeployment.Spec.ApplicationPort,
 								},
 							},
 							Env: convertEnvMap(containerDeployment.Spec.EnvironmentVars),
@@ -111,25 +167,81 @@ func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.
 		},
 	}
 
-	if err := r.Create(ctx, deploy); err != nil {
-		return ctrl.Result{}, err
+	if err := r.Create(ctx, deploy); err != nil && !errors.IsAlreadyExists(err) {
+		return err
 	}
 
-	return ctrl.Result{}, nil
+	return nil
 }
 
-// SetupWithManager sets up the controller with the Manager.
-func (r *ContainerDeploymentReconciler) SetupWithManager(mgr ctrl.Manager) error {
-	return ctrl.NewControllerManagedBy(mgr).
-		For(&containerv1.ContainerDeployment{}).
-		Complete(r)
-}
-
-func convertEnvMap(envMap map[string]string) []corev1.EnvVar {
-	var envVars []corev1.EnvVar
-	for name, value := range envMap {
-		envVars = append(envVars, corev1.EnvVar{Name: name, Value: value})
+func createService(r *ContainerDeploymentReconciler,
+	containerDeployment containerv1.ContainerDeployment,
+	ctx context.Context) (string, error) {
+	service := &corev1.Service{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      containerDeployment.Name,
+			Namespace: containerDeployment.Spec.Namespace,
+		},
+		Spec: corev1.ServiceSpec{
+			Type:     corev1.ServiceTypeClusterIP,
+			Selector: map[string]string{"app": containerDeployment.Name},
+			Ports: []corev1.ServicePort{
+				{
+					// TODO: THIS NAME SHOULD BE VALIDATED TO ONLY BE MAX 15 CHARACTERS
+					Name:       containerDeployment.Name,
+					Port:       containerDeployment.Spec.ExposedPort,
+					TargetPort: intstr.FromInt32(containerDeployment.Spec.ApplicationPort),
+				},
+			},
+		},
 	}
 
-	return envVars
+	if err := r.Create(ctx, service); err != nil && !errors.IsAlreadyExists(err) {
+		return "", err
+	}
+	return containerDeployment.Name, nil
+}
+
+func createIngress(backendPortName string, r *ContainerDeploymentReconciler,
+	containerDeployment containerv1.ContainerDeployment,
+	ctx context.Context) error {
+	pathType := networkingv1.PathTypePrefix
+	randomPath := strings.Split(uuid.New().String(), "-")[0]
+	ingressClassName := "traefik"
+	ingress := &networkingv1.Ingress{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      containerDeployment.Name,
+			Namespace: containerDeployment.Spec.Namespace,
+		},
+		Spec: networkingv1.IngressSpec{
+			IngressClassName: &ingressClassName,
+			Rules: []networkingv1.IngressRule{
+				{
+					IngressRuleValue: networkingv1.IngressRuleValue{
+						HTTP: &networkingv1.HTTPIngressRuleValue{
+							Paths: []networkingv1.HTTPIngressPath{
+								{
+									Path:     "/" + randomPath,
+									PathType: &pathType,
+									Backend: networkingv1.IngressBackend{
+										Service: &networkingv1.IngressServiceBackend{
+											Name: containerDeployment.Name,
+											Port: networkingv1.ServiceBackendPort{
+												Name: backendPortName,
+											},
+										},
+									},
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+
+	if err := r.Create(ctx, ingress); err != nil && !errors.IsAlreadyExists(err) {
+		return err
+	}
+	return nil
 }

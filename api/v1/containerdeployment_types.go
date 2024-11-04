@@ -25,7 +25,8 @@ type ContainerDeploymentSpec struct {
 	Namespace       string            `json:"namespace,omitempty"`
 	CPU             string            `json:"cpu,omitempty"`
 	Memory          string            `json:"memory,omitempty"`
-	Port            int32             `json:"port"`
+	ExposedPort     int32             `json:"exposed-port"`
+	ApplicationPort int32             `json:"application-port"`
 	Storage         string            `json:"storage,omitempty"`
 	EnvironmentVars map[string]string `json:"env,omitempty"`
 }

@@ -38,26 +38,30 @@ spec:
             type: object
           spec:
             properties:
+              application-port:
+                format: int32
+                type: integer
               cpu:
                 type: string
               env:
                 additionalProperties:
                   type: string
                 type: object
+              exposed-port:
+                format: int32
+                type: integer
               image:
                 type: string
               memory:
                 type: string
               namespace:
                 type: string
-              port:
-                format: int32
-                type: integer
               storage:
                 type: string
             required:
+            - application-port
+            - exposed-port
             - image
-            - port
             type: object
           status:
             properties:
