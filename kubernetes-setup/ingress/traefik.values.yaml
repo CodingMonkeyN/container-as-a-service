@@ -22,10 +22,10 @@ additionalArguments:
 # DNS Challenge
 # ---
 # Cloudflare Example:
-#  - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
-#  - --certificatesresolvers.cloudflare.acme.email=your-email@example.com
-#  - --certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1
-#  - --certificatesresolvers.cloudflare.acme.storage=/ssl-certs/acme-cloudflare.json
+  - --certificatesresolvers.cloudflare.acme.dnschallenge.provider=cloudflare
+  - --certificatesresolvers.cloudflare.acme.email=your-email@example.com
+  - --certificatesresolvers.cloudflare.acme.dnschallenge.resolvers=1.1.1.1
+  - --certificatesresolvers.cloudflare.acme.storage=/ssl-certs/acme-cloudflare.json
 #
 # Generic (replace with your DNS provider):
 #  - --certificatesresolvers.generic.acme.dnschallenge.provider=generic
@@ -41,7 +41,7 @@ ports:
   # Configure your entrypoints here...
   web:
   # (optional) Permanent Redirect to HTTPS
-  # redirectTo: websecure
+  redirectTo: websecure
   websecure:
     tls:
       enabled: true
@@ -55,16 +55,16 @@ env:
 # DNS Challenge Credentials
 # ---
 # Cloudflare Example:
-#   - name: CF_API_EMAIL
-#     valueFrom:
-#       secretKeyRef:
-#         key: email
-#         name: cloudflare-credentials
-#   - name: CF_API_KEY
-#     valueFrom:
-#       secretKeyRef:
-#         key: apiKey
-#         name: cloudflare-credentials
+   - name: CF_API_EMAIL
+     valueFrom:
+       secretKeyRef:
+         key: email
+         name: cloudflare-credentials
+   - name: CF_API_KEY
+     valueFrom:
+       secretKeyRef:
+         key: apiKey
+         name: cloudflare-credentials
 
 # Disable Dashboard
 ingressRoute:

@@ -9,3 +9,7 @@ spec:
   cpu: "250m"
   exposed-port: 8080
   application-port: 8080
+  storage:
+    size: "1Gi"
+    mount-path: "/data"
+    keep-after-delete: true

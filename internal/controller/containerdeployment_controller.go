@@ -51,8 +51,6 @@ type ContainerDeploymentReconciler struct {
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.19.0/pkg/reconcile
 func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
-
-	// Fetch the ContainerDeployment instance
 	var containerDeployment containerv1.ContainerDeployment
 	if err := r.Get(ctx, req.NamespacedName, &containerDeployment); err != nil {
 		return ctrl.Result{}, client.IgnoreNotFound(err)
@@ -64,8 +62,15 @@ func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.
 		return ctrl.Result{}, namespaceError
 	}
 
+	volumeClaimError := createVolumeClaim(r, containerDeployment, ctx)
+	if volumeClaimError != nil {
+		log.Println("Error creating volumeClaim")
+		return ctrl.Result{}, volumeClaimError
+	}
+
 	deploymentError := createDeployment(r, containerDeployment, ctx)
 	if deploymentError != nil {
+		log.Println("Error creating deployment")
 		return ctrl.Result{}, deploymentError
 	}
 
@@ -84,7 +89,6 @@ func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.
 	return ctrl.Result{}, nil
 }
 
-// SetupWithManager sets up the controller with the Manager.
 func (r *ContainerDeploymentReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&containerv1.ContainerDeployment{}).
@@ -125,6 +129,15 @@ func createDeployment(r *ContainerDeploymentReconciler,
 	containerDeployment containerv1.ContainerDeployment,
 	ctx context.Context,
 ) error {
+	var mounts []corev1.VolumeMount
+	if containerDeployment.Spec.Storage != nil {
+		mounts = []corev1.VolumeMount{
+			{
+				Name:      containerDeployment.Name,
+				MountPath: containerDeployment.Spec.Storage.MountPath,
+			},
+		}
+	}
 	deploy := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      containerDeployment.Name,
@@ -153,7 +166,9 @@ func createDeployment(r *ContainerDeploymentReconciler,
 									ContainerPort: containerDeployment.Spec.ApplicationPort,
 								},
 							},
-							Env: convertEnvMap(containerDeployment.Spec.EnvironmentVars),
+							ImagePullPolicy: corev1.PullAlways,
+							VolumeMounts:    mounts,
+							Env:             convertEnvMap(containerDeployment.Spec.EnvironmentVars),
 							Resources: corev1.ResourceRequirements{
 								Limits: corev1.ResourceList{
 									corev1.ResourceCPU:    resource.MustParse(containerDeployment.Spec.CPU),
@@ -241,6 +256,36 @@ func createIngress(backendPortName string, r *ContainerDeploymentReconciler,
 	}
 
 	if err := r.Create(ctx, ingress); err != nil && !errors.IsAlreadyExists(err) {
+		return err
+	}
+	return nil
+}
+
+func createVolumeClaim(r *ContainerDeploymentReconciler,
+	containerDeployment containerv1.ContainerDeployment,
+	ctx context.Context) error {
+	if containerDeployment.Spec.Storage == nil {
+		return nil
+	}
+
+	volumeClaim := &corev1.PersistentVolumeClaim{
+		ObjectMeta: metav1.ObjectMeta{},
+		Spec: corev1.PersistentVolumeClaimSpec{
+			VolumeName: containerDeployment.Name,
+			AccessModes: []corev1.PersistentVolumeAccessMode{
+				corev1.ReadWriteOnce,
+			},
+			Resources: corev1.VolumeResourceRequirements{
+				Requests: map[corev1.ResourceName]resource.Quantity{
+					corev1.ResourceStorage: {
+						Format: containerDeployment.Spec.Storage.Size,
+					},
+				},
+			},
+		},
+	}
+
+	if err := r.Create(ctx, volumeClaim); err != nil && !errors.IsAlreadyExists(err) {
 		return err
 	}
 	return nil
