@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: local-codingmonkey-cloud
+  namespace: default
+spec:
+  secretName: local-codingmonkey-cloud-tls
+  issuerRef:
+    name: lets-encrypt-staging
+    kind: ClusterIssuer
+  commonName: "*.local.codingmonkey.cloud"
+  dnsNames:
+    - "*.local.codingmonkey.cloud"
