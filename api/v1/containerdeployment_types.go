@@ -17,7 +17,6 @@ limitations under the License.
 package v1
 
 import (
-	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -33,8 +32,8 @@ type ContainerDeploymentSpec struct {
 }
 
 type StorageSpec struct {
-	Size      resource.Format `json:"size"`
-	MountPath string          `json:"mount-path"`
+	Size      string `json:"size"`
+	MountPath string `json:"mount-path"`
 }
 
 type ContainerDeploymentStatus struct {

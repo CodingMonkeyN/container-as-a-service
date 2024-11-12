@@ -57,7 +57,15 @@ spec:
               namespace:
                 type: string
               storage:
-                type: string
+                properties:
+                  mount-path:
+                    type: string
+                  size:
+                    type: string
+                required:
+                - mount-path
+                - size
+                type: object
             required:
             - application-port
             - exposed-port

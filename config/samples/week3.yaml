@@ -8,4 +8,4 @@ spec:
   memory: "64Mi"
   cpu: "250m"
   exposed-port: 80
-  application-port: 80
+  application-port: 443

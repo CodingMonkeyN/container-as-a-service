@@ -1,11 +1,11 @@
 apiVersion: apps.com.coding-monkey/v1
 kind: ContainerDeployment
 metadata:
-  name: week2-demo
+  name: hello-world-api
 spec:
-  image: nginx:latest
-  namespace: week2-demo
+  image: nmatsui/hello-world-api
+  namespace: hello-world
   memory: "64Mi"
   cpu: "250m"
   exposed-port: 80
-  application-port: 80
+  application-port: 3000

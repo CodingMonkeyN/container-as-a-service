@@ -18,14 +18,11 @@ package controller
 
 import (
 	"context"
-	"github.com/google/uuid"
-	"k8s.io/apimachinery/pkg/util/intstr"
-	"log"
-	"strings"
-
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	networkingv1 "k8s.io/api/networking/v1"
+	"k8s.io/apimachinery/pkg/util/intstr"
+	"log"
 
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/resource"
@@ -221,22 +218,32 @@ func createIngress(backendPortName string, r *ContainerDeploymentReconciler,
 	containerDeployment containerv1.ContainerDeployment,
 	ctx context.Context) error {
 	pathType := networkingv1.PathTypePrefix
-	randomPath := strings.Split(uuid.New().String(), "-")[0]
 	ingressClassName := "traefik"
 	ingress := &networkingv1.Ingress{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      containerDeployment.Name,
 			Namespace: containerDeployment.Spec.Namespace,
+			Annotations: map[string]string{
+				"kubernetes.io/ingress.class":    "traefik",
+				"cert-manager.io/cluster-issuer": "lets-encrypt",
+			},
 		},
 		Spec: networkingv1.IngressSpec{
 			IngressClassName: &ingressClassName,
+			TLS: []networkingv1.IngressTLS{
+				{
+					Hosts:      []string{containerDeployment.Name + ".codingmonkey.cloud"},
+					SecretName: "codingmonkey-cloud-tls",
+				},
+			},
 			Rules: []networkingv1.IngressRule{
 				{
+					Host: containerDeployment.Name + ".codingmonkey.cloud",
 					IngressRuleValue: networkingv1.IngressRuleValue{
 						HTTP: &networkingv1.HTTPIngressRuleValue{
 							Paths: []networkingv1.HTTPIngressPath{
 								{
-									Path:     "/" + randomPath,
+									Path:     "/",
 									PathType: &pathType,
 									Backend: networkingv1.IngressBackend{
 										Service: &networkingv1.IngressServiceBackend{
@@ -278,7 +285,7 @@ func createVolumeClaim(r *ContainerDeploymentReconciler,
 			Resources: corev1.VolumeResourceRequirements{
 				Requests: map[corev1.ResourceName]resource.Quantity{
 					corev1.ResourceStorage: {
-						Format: containerDeployment.Spec.Storage.Size,
+						Format: resource.Format(containerDeployment.Spec.Storage.Size),
 					},
 				},
 			},
