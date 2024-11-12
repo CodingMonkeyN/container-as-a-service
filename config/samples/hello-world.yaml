@@ -1,7 +1,7 @@
 apiVersion: apps.com.coding-monkey/v1
 kind: ContainerDeployment
 metadata:
-  name: hello-world-api
+  name: hello-world
 spec:
   image: nmatsui/hello-world-api
   namespace: hello-world

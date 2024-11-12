@@ -1,10 +1,10 @@
 apiVersion: apps.com.coding-monkey/v1
 kind: ContainerDeployment
 metadata:
-  name: week2-demo
+  name: ingress
 spec:
   image: nginx:latest
-  namespace: week2-demo
+  namespace: ingress
   memory: "64Mi"
   cpu: "250m"
   exposed-port: 80

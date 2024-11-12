@@ -18,19 +18,18 @@ package controller
 
 import (
 	"context"
+	containerv1 "github.com/CodingMonkeyN/container-as-a-service/api/v1"
 	appsv1 "k8s.io/api/apps/v1"
 	corev1 "k8s.io/api/core/v1"
 	networkingv1 "k8s.io/api/networking/v1"
-	"k8s.io/apimachinery/pkg/util/intstr"
-	"log"
-
 	"k8s.io/apimachinery/pkg/api/errors"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/utils/pointer"
-
-	containerv1 "github.com/CodingMonkeyN/container-as-a-service/api/v1"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/intstr"
+	"k8s.io/utils/pointer"
+	"k8s.io/utils/ptr"
+	"log"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 )
@@ -53,6 +52,15 @@ func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
+	if len(containerDeployment.Name) > 15 {
+		return ctrl.Result{}, errors.NewBadRequest("Name must be less than 16 characters")
+	}
+
+	/*
+		if strings.HasPrefix(containerDeployment.Spec.Image, "") {
+			return ctrl.Result{}, errors.NewBadRequest("invalid image repository")
+		}
+	*/
 	namespaceError := createNamespace(r, containerDeployment, ctx)
 	if namespaceError != nil {
 		log.Println("Error creating namespace")
@@ -154,6 +162,7 @@ func createDeployment(r *ContainerDeploymentReconciler,
 					},
 				},
 				Spec: corev1.PodSpec{
+					RuntimeClassName: ptr.To("kata-qemu"),
 					Containers: []corev1.Container{
 						{
 							Name:  containerDeployment.Name,
