@@ -162,7 +162,8 @@ func createDeployment(r *ContainerDeploymentReconciler,
 					},
 				},
 				Spec: corev1.PodSpec{
-					RuntimeClassName: ptr.To("kata-qemu"),
+					RuntimeClassName:   ptr.To("kata-qemu"),
+					EnableServiceLinks: ptr.To(false),
 					Containers: []corev1.Container{
 						{
 							Name:  containerDeployment.Name,
