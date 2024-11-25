@@ -106,6 +106,27 @@ func convertEnvMap(envMap map[string]string) []corev1.EnvVar {
 		envVars = append(envVars, corev1.EnvVar{Name: name, Value: value})
 	}
 
+	envVars = overrideDefaultEnvInjections(envVars)
+
+	return envVars
+}
+
+func overrideDefaultEnvInjections(envVars []corev1.EnvVar) []corev1.EnvVar {
+	envToOverride := map[string]string{
+		"KUBERNETES_SERVICE_PORT_HTTPS": "",
+		"KUBERNETES_SERVICE_PORT":       "",
+		"KUBERNETES_PORT_443_TCP":       "",
+		"KUBERNETES_PORT_443_TCP_PROTO": "",
+		"KUBERNETES_PORT_443_TCP_ADDR":  "",
+		"KUBERNETES_SERVICE_HOST":       "",
+		"KUBERNETES_PORT":               "",
+		"KUBERNETES_PORT_443_TCP_PORT":  "",
+		"HOSTNAME":                      "",
+	}
+	for name, value := range envToOverride {
+		envVars = append(envVars, corev1.EnvVar{Name: name, Value: value})
+	}
+
 	return envVars
 }
 
@@ -170,7 +191,7 @@ func createDeployment(r *ContainerDeploymentReconciler,
 							Image: containerDeployment.Spec.Image,
 							Ports: []corev1.ContainerPort{
 								{
-									ContainerPort: containerDeployment.Spec.ApplicationPort,
+									ContainerPort: containerDeployment.Spec.Port,
 								},
 							},
 							ImagePullPolicy: corev1.PullAlways,
@@ -209,10 +230,9 @@ func createService(r *ContainerDeploymentReconciler,
 			Selector: map[string]string{"app": containerDeployment.Name},
 			Ports: []corev1.ServicePort{
 				{
-					// TODO: THIS NAME SHOULD BE VALIDATED TO ONLY BE MAX 15 CHARACTERS
 					Name:       containerDeployment.Name,
-					Port:       containerDeployment.Spec.ExposedPort,
-					TargetPort: intstr.FromInt32(containerDeployment.Spec.ApplicationPort),
+					Port:       containerDeployment.Spec.Port,
+					TargetPort: intstr.FromInt32(containerDeployment.Spec.Port),
 				},
 			},
 		},
