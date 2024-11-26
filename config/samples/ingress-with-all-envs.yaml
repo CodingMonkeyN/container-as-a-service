@@ -1,12 +1,10 @@
 apiVersion: apps.com.coding-monkey/v1
 kind: ContainerDeployment
 metadata:
-  name: ingress4
+  name: ingress-max-env
 spec:
   image: nginx:latest
-  namespace: ingress4
+  namespace: ingress-max-env
   memory: "64Mi"
   cpu: "250m"
   port: 80
-  env:
-      ENV_VAR_1: "value1"
