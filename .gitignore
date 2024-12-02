@@ -26,4 +26,4 @@ go.work
 *.swo
 *~
 
-kubernetes-setup/ingress/cloudflare-credentials.yaml
+kubernetes-setup/cert-manager/cloudflare-credentials.yaml
