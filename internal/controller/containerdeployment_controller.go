@@ -28,7 +28,6 @@ import (
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/intstr"
 	"k8s.io/utils/pointer"
-	"k8s.io/utils/ptr"
 	"log"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -183,8 +182,8 @@ func createDeployment(r *ContainerDeploymentReconciler,
 					},
 				},
 				Spec: corev1.PodSpec{
-					RuntimeClassName:   ptr.To("kata-qemu"),
-					EnableServiceLinks: ptr.To(false),
+					//RuntimeClassName:   ptr.To("kata-qemu"),
+					//EnableServiceLinks: ptr.To(false),
 					Containers: []corev1.Container{
 						{
 							Name:  containerDeployment.Name,
