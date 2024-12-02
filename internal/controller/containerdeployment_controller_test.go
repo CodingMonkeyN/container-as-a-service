@@ -18,6 +18,9 @@ package controller
 
 import (
 	"context"
+	"github.com/CodingMonkeyN/container-as-a-service/test/utils"
+	corev1 "k8s.io/api/core/v1"
+	"time"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
@@ -37,26 +40,65 @@ var _ = Describe("ContainerDeployment Controller", func() {
 
 		typeNamespacedName := types.NamespacedName{
 			Name:      resourceName,
-			Namespace: "default", // TODO(user):Modify as needed
+			Namespace: "test", // TODO(user):Modify as needed
 		}
 		containerdeployment := &appsv1.ContainerDeployment{}
 
 		BeforeEach(func() {
+			By("installing the cert-manager")
+			Expect(utils.InstallCertManager()).To(Succeed())
+
 			By("creating the custom resource for the Kind ContainerDeployment")
 			err := k8sClient.Get(ctx, typeNamespacedName, containerdeployment)
 			if err != nil && errors.IsNotFound(err) {
 				resource := &appsv1.ContainerDeployment{
 					ObjectMeta: metav1.ObjectMeta{
-						Name:      resourceName,
-						Namespace: "default",
+						Name: resourceName,
 					},
-					// TODO(user): Specify other spec details if needed.
+					Spec: appsv1.ContainerDeploymentSpec{
+						Image:     "nginx:latest",
+						Namespace: typeNamespacedName.Namespace,
+						Port:      80,
+						Memory:    "64Mi",
+						CPU:       "250m",
+						EnvironmentVars: map[string]string{
+							"test-key": "test-value",
+						},
+					},
 				}
 				Expect(k8sClient.Create(ctx, resource)).To(Succeed())
 			}
 		})
 
+		It("should successfully reconcile the resource", func() {
+			By("Reconciling the created resource")
+			controllerReconciler := &ContainerDeploymentReconciler{
+				Client: k8sClient,
+				Scheme: k8sClient.Scheme(),
+			}
+
+			_, err := controllerReconciler.Reconcile(ctx, reconcile.Request{
+				NamespacedName: typeNamespacedName,
+			})
+			Expect(err).NotTo(HaveOccurred())
+		})
+
+		var (
+			interval = 100 * time.Millisecond
+			timeout  = 5 * time.Second
+		)
+		It("should have successfully created the namespace", func() {
+			Eventually(func() bool {
+				ns := &corev1.Namespace{}
+				err := k8sClient.Get(ctx, typeNamespacedName, ns)
+				return err == nil
+			}, timeout, interval).Should(BeTrue(), "Expected namespace to be created")
+		})
+
 		AfterEach(func() {
+			By("uninstalling the cert-manager bundle")
+			utils.UninstallCertManager()
+
 			// TODO(user): Cleanup logic after each test, like removing the resource instance.
 			resource := &appsv1.ContainerDeployment{}
 			err := k8sClient.Get(ctx, typeNamespacedName, resource)
