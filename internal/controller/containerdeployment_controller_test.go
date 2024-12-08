@@ -17,6 +17,7 @@ limitations under the License.
 package controller
 
 import (
+	"fmt"
 	"k8s.io/utils/ptr"
 	"time"
 
@@ -128,13 +129,59 @@ var _ = Describe("ContainerDeployment Controller", Ordered, func() {
 			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
 
 			Expect(len(podList.Items)).To(BeNumerically(">", 0), "Expected at least one Pod to be created")
-
 			// TODO: ENABLE ONCE KATAS IS INSTALLED
 			/*
 				for _, pod := range podList.Items {
 					Expect(pod.Spec.RuntimeClassName).NotTo(BeNil(), "Expected runtimeClassName to be set")
 					Expect(*pod.Spec.RuntimeClassName).To(Equal("kata-qemu"), "Expected runtimeClassName to match 'kata-qemu'")
 				}*/
+		})
+
+		It("should ensure the Pod has the correct environment variables", func() {
+			deployment := &appsv1.Deployment{}
+			Eventually(func() error {
+				return k8sClient.Get(ctx, client.ObjectKey{
+					Name:      containerDeployment.Name,
+					Namespace: containerDeployment.Spec.Namespace,
+				}, deployment)
+			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
+
+			podList := &corev1.PodList{}
+			Eventually(func() error {
+				return k8sClient.List(ctx, podList, client.InNamespace(containerDeployment.Spec.Namespace), client.MatchingLabels(deployment.Spec.Selector.MatchLabels))
+			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
+
+			Expect(len(podList.Items)).To(BeNumerically(">", 0), "Expected at least one Pod to be created")
+
+			defaultEnvs := map[string]string{
+				"KUBERNETES_SERVICE_PORT_HTTPS": "",
+				"KUBERNETES_SERVICE_PORT":       "",
+				"KUBERNETES_PORT_443_TCP":       "",
+				"KUBERNETES_PORT_443_TCP_PROTO": "",
+				"KUBERNETES_PORT_443_TCP_ADDR":  "",
+				"KUBERNETES_SERVICE_HOST":       "",
+				"KUBERNETES_PORT":               "",
+				"KUBERNETES_PORT_443_TCP_PORT":  "",
+				"HOSTNAME":                      "",
+			}
+			expectedEnv := containerDeployment.Spec.EnvironmentVars
+
+			for _, pod := range podList.Items {
+				for _, container := range pod.Spec.Containers {
+					actualEnv := make(map[string]string)
+					for _, env := range container.Env {
+						actualEnv[env.Name] = env.Value
+					}
+
+					for name, value := range expectedEnv {
+						Expect(actualEnv).To(HaveKeyWithValue(name, value), fmt.Sprintf("Expected environment variable %s to have value %s", name, value))
+					}
+
+					for name, value := range defaultEnvs {
+						Expect(actualEnv).To(HaveKeyWithValue(name, value), fmt.Sprintf("Expected default environment variable %s to have value %s", name, value))
+					}
+				}
+			}
 		})
 
 		It("should create the service", func() {
