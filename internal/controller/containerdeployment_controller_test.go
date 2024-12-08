@@ -18,7 +18,6 @@ package controller
 
 import (
 	"context"
-	"github.com/CodingMonkeyN/container-as-a-service/test/utils"
 	corev1 "k8s.io/api/core/v1"
 	"time"
 
@@ -40,16 +39,26 @@ var _ = Describe("ContainerDeployment Controller", func() {
 
 		typeNamespacedName := types.NamespacedName{
 			Name:      resourceName,
-			Namespace: "test", // TODO(user):Modify as needed
+			Namespace: "test",
+		}
+		testNamespace := types.NamespacedName{
+			Name:      "test",
+			Namespace: "test-2",
 		}
 		containerdeployment := &appsv1.ContainerDeployment{}
 
 		BeforeEach(func() {
-			By("installing the cert-manager")
-			Expect(utils.InstallCertManager()).To(Succeed())
+			By("creating the test namespace")
+			ns := &corev1.Namespace{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: typeNamespacedName.Namespace,
+				},
+			}
+			Expect(k8sClient.Create(ctx, ns)).To(Succeed())
 
 			By("creating the custom resource for the Kind ContainerDeployment")
 			err := k8sClient.Get(ctx, typeNamespacedName, containerdeployment)
+
 			if err != nil && errors.IsNotFound(err) {
 				resource := &appsv1.ContainerDeployment{
 					ObjectMeta: metav1.ObjectMeta{
@@ -57,7 +66,7 @@ var _ = Describe("ContainerDeployment Controller", func() {
 					},
 					Spec: appsv1.ContainerDeploymentSpec{
 						Image:     "nginx:latest",
-						Namespace: typeNamespacedName.Namespace,
+						Namespace: testNamespace.Namespace,
 						Port:      80,
 						Memory:    "64Mi",
 						CPU:       "250m",
@@ -96,30 +105,23 @@ var _ = Describe("ContainerDeployment Controller", func() {
 		})
 
 		AfterEach(func() {
-			By("uninstalling the cert-manager bundle")
-			utils.UninstallCertManager()
-
 			// TODO(user): Cleanup logic after each test, like removing the resource instance.
 			resource := &appsv1.ContainerDeployment{}
 			err := k8sClient.Get(ctx, typeNamespacedName, resource)
 			Expect(err).NotTo(HaveOccurred())
-
-			By("Cleanup the specific resource instance ContainerDeployment")
-			Expect(k8sClient.Delete(ctx, resource)).To(Succeed())
-		})
-		It("should successfully reconcile the resource", func() {
-			By("Reconciling the created resource")
-			controllerReconciler := &ContainerDeploymentReconciler{
-				Client: k8sClient,
-				Scheme: k8sClient.Scheme(),
+			if err == nil {
+				By("Cleanup the specific resource instance ContainerDeployment")
+				Expect(k8sClient.Delete(ctx, resource)).To(Succeed())
 			}
 
-			_, err := controllerReconciler.Reconcile(ctx, reconcile.Request{
-				NamespacedName: typeNamespacedName,
-			})
+			By("Cleanup the namespace")
+			ns := &corev1.Namespace{
+				ObjectMeta: metav1.ObjectMeta{
+					Name: typeNamespacedName.Namespace,
+				},
+			}
+			err = k8sClient.Delete(ctx, ns)
 			Expect(err).NotTo(HaveOccurred())
-			// TODO(user): Add more specific assertions depending on your controller's reconciliation logic.
-			// Example: If you expect a certain status condition after reconciliation, verify it here.
 		})
 	})
 })

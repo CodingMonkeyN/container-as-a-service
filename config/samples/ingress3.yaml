@@ -7,5 +7,4 @@ spec:
   namespace: ingress3
   memory: "64Mi"
   cpu: "250m"
-  exposed-port: 80
-  application-port: 443
+  port: 80

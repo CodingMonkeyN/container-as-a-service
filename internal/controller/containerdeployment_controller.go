@@ -43,6 +43,13 @@ type ContainerDeploymentReconciler struct {
 // +kubebuilder:rbac:groups=apps.com.coding-monkey,resources=containerdeployments,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=apps.com.coding-monkey,resources=containerdeployments/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=apps.com.coding-monkey,resources=containerdeployments/finalizers,verbs=update
+// +kubebuilder:rbac:groups=apps.com.coding-monkey,resources=containerdeployments,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=apps.com.coding-monkey,resources=containerdeployments/status,verbs=get
+// +kubebuilder:rbac:groups="",resources=namespaces,verbs=create;delete;list;watch
+// +kubebuilder:rbac:groups="",resources=services,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups="apps",resources=deployments,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups="networking.k8s.io",resources=ingresses,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups="",resources=persistentvolumeclaims,verbs=get;list;watch;create;update;patch;delete
 
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.19.0/pkg/reconcile
@@ -58,7 +65,7 @@ func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.
 
 	namespaceError := createNamespace(r, containerDeployment, ctx)
 	if namespaceError != nil {
-		log.Println("Error creating namespace")
+		log.Println("Error creating namespace: ", namespaceError.Error())
 		return ctrl.Result{}, namespaceError
 	}
 
@@ -178,7 +185,7 @@ func createDeployment(r *ContainerDeploymentReconciler,
 					},
 				},
 				Spec: corev1.PodSpec{
-					RuntimeClassName:   ptr.To("kata-qemu"),
+					//RuntimeClassName:   ptr.To("kata-qemu"),
 					EnableServiceLinks: ptr.To(false),
 					Containers: []corev1.Container{
 						{
