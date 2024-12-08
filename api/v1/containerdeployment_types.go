@@ -26,13 +26,8 @@ type ContainerDeploymentSpec struct {
 	CPU             string            `json:"cpu,omitempty"`
 	Memory          string            `json:"memory,omitempty"`
 	Port            int32             `json:"port"`
-	Storage         *StorageSpec      `json:"storage,omitempty"`
+	Replicas        *int32            `json:"replicas,omitempty"`
 	EnvironmentVars map[string]string `json:"env,omitempty"`
-}
-
-type StorageSpec struct {
-	Size      string `json:"size"`
-	MountPath string `json:"mount-path"`
 }
 
 type ContainerDeploymentStatus struct {

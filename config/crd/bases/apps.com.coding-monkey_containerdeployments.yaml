@@ -53,16 +53,9 @@ spec:
               port:
                 format: int32
                 type: integer
-              storage:
-                properties:
-                  mount-path:
-                    type: string
-                  size:
-                    type: string
-                required:
-                - mount-path
-                - size
-                type: object
+              replicas:
+                format: int32
+                type: integer
             required:
             - image
             - port

@@ -17,111 +17,150 @@ limitations under the License.
 package controller
 
 import (
-	"context"
-	corev1 "k8s.io/api/core/v1"
+	"k8s.io/utils/ptr"
 	"time"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/types"
-	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 
+	v1 "github.com/CodingMonkeyN/container-as-a-service/api/v1" // Dein CRD-Paket
+	appsv1 "k8s.io/api/apps/v1"
+	corev1 "k8s.io/api/core/v1"
+	networkingv1 "k8s.io/api/networking/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-
-	appsv1 "github.com/CodingMonkeyN/container-as-a-service/api/v1"
+	"sigs.k8s.io/controller-runtime/pkg/client"
 )
 
-var _ = Describe("ContainerDeployment Controller", func() {
-	Context("When reconciling a resource", func() {
-		const resourceName = "test-resource"
-		ctx := context.Background()
+var _ = Describe("ContainerDeployment Controller", Ordered, func() {
+	var (
+		containerDeployment *v1.ContainerDeployment
+	)
 
-		typeNamespacedName := types.NamespacedName{
-			Name:      resourceName,
-			Namespace: "test",
-		}
-		testNamespace := types.NamespacedName{
-			Name:      "test",
-			Namespace: "test-2",
-		}
-		containerdeployment := &appsv1.ContainerDeployment{}
+	integrationTestNs := &corev1.Namespace{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: "integration-test",
+		},
+	}
 
-		BeforeEach(func() {
-			By("creating the test namespace")
-			ns := &corev1.Namespace{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: typeNamespacedName.Namespace,
+	deploymentNs := &corev1.Namespace{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: "test-namespace",
+		},
+	}
+
+	BeforeAll(func() {
+		containerDeployment = &v1.ContainerDeployment{
+			ObjectMeta: metav1.ObjectMeta{
+				Name:      "test-container",
+				Namespace: integrationTestNs.Name,
+			},
+			Spec: v1.ContainerDeploymentSpec{
+				Image:     "nginx:latest",
+				Namespace: deploymentNs.Name,
+				Port:      80,
+				Memory:    "64Mi",
+				CPU:       "250m",
+				Replicas:  ptr.To(int32(2)),
+				EnvironmentVars: map[string]string{
+					"TEST_KEY": "TEST_VALUE",
 				},
-			}
-			Expect(k8sClient.Create(ctx, ns)).To(Succeed())
+			},
+		}
 
-			By("creating the custom resource for the Kind ContainerDeployment")
-			err := k8sClient.Get(ctx, typeNamespacedName, containerdeployment)
+		Expect(k8sClient.Create(ctx, integrationTestNs)).To(Succeed())
 
-			if err != nil && errors.IsNotFound(err) {
-				resource := &appsv1.ContainerDeployment{
-					ObjectMeta: metav1.ObjectMeta{
-						Name: resourceName,
-					},
-					Spec: appsv1.ContainerDeploymentSpec{
-						Image:     "nginx:latest",
-						Namespace: testNamespace.Namespace,
-						Port:      80,
-						Memory:    "64Mi",
-						CPU:       "250m",
-						EnvironmentVars: map[string]string{
-							"test-key": "test-value",
-						},
-					},
-				}
-				Expect(k8sClient.Create(ctx, resource)).To(Succeed())
-			}
-		})
+		Expect(k8sClient.Create(ctx, containerDeployment)).To(Succeed())
+	})
 
-		It("should successfully reconcile the resource", func() {
-			By("Reconciling the created resource")
-			controllerReconciler := &ContainerDeploymentReconciler{
-				Client: k8sClient,
-				Scheme: k8sClient.Scheme(),
-			}
+	AfterAll(func() {
+		_ = k8sClient.Delete(ctx, integrationTestNs)
 
-			_, err := controllerReconciler.Reconcile(ctx, reconcile.Request{
-				NamespacedName: typeNamespacedName,
-			})
-			Expect(err).NotTo(HaveOccurred())
-		})
+		deleteResource(&appsv1.Deployment{}, containerDeployment)
+		deleteResource(&corev1.Service{}, containerDeployment)
+		deleteResource(&networkingv1.Ingress{}, containerDeployment)
+		_ = k8sClient.Delete(ctx, deploymentNs)
+	})
 
-		var (
-			interval = 100 * time.Millisecond
-			timeout  = 5 * time.Second
-		)
-		It("should have successfully created the namespace", func() {
-			Eventually(func() bool {
+	Context("When ContainerDeployment is created", func() {
+		It("should create the namespace", func() {
+			Eventually(func() error {
 				ns := &corev1.Namespace{}
-				err := k8sClient.Get(ctx, typeNamespacedName, ns)
-				return err == nil
-			}, timeout, interval).Should(BeTrue(), "Expected namespace to be created")
+				return k8sClient.Get(ctx, client.ObjectKey{Name: containerDeployment.Spec.Namespace}, ns)
+			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
 		})
 
-		AfterEach(func() {
-			// TODO(user): Cleanup logic after each test, like removing the resource instance.
-			resource := &appsv1.ContainerDeployment{}
-			err := k8sClient.Get(ctx, typeNamespacedName, resource)
-			Expect(err).NotTo(HaveOccurred())
-			if err == nil {
-				By("Cleanup the specific resource instance ContainerDeployment")
-				Expect(k8sClient.Delete(ctx, resource)).To(Succeed())
-			}
+		It("should create the deployment", func() {
+			Eventually(func() error {
+				deployment := &appsv1.Deployment{}
+				return k8sClient.Get(ctx, client.ObjectKey{
+					Name:      containerDeployment.Name,
+					Namespace: containerDeployment.Spec.Namespace,
+				}, deployment)
+			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
+		})
 
-			By("Cleanup the namespace")
-			ns := &corev1.Namespace{
-				ObjectMeta: metav1.ObjectMeta{
-					Name: typeNamespacedName.Namespace,
-				},
-			}
-			err = k8sClient.Delete(ctx, ns)
-			Expect(err).NotTo(HaveOccurred())
+		It("should have the correct replicas", func() {
+			Eventually(func() *int32 {
+				deployment := &appsv1.Deployment{}
+				err := k8sClient.Get(ctx, client.ObjectKey{
+					Name:      containerDeployment.Name,
+					Namespace: containerDeployment.Spec.Namespace,
+				}, deployment)
+				if err != nil {
+					return ptr.To(int32(0))
+				}
+				return ptr.To(deployment.Status.ReadyReplicas)
+			}, 10*time.Second, 100*time.Millisecond).Should(Equal(containerDeployment.Spec.Replicas), "Expected number of ready replicas to match the spec")
+		})
+
+		It("should ensure the Pod has the correct runtimeClass", func() {
+			deployment := &appsv1.Deployment{}
+			Eventually(func() error {
+				return k8sClient.Get(ctx, client.ObjectKey{
+					Name:      containerDeployment.Name,
+					Namespace: containerDeployment.Spec.Namespace,
+				}, deployment)
+			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
+
+			podList := &corev1.PodList{}
+			Eventually(func() error {
+				return k8sClient.List(ctx, podList, client.InNamespace(containerDeployment.Spec.Namespace), client.MatchingLabels(deployment.Spec.Selector.MatchLabels))
+			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
+
+			Expect(len(podList.Items)).To(BeNumerically(">", 0), "Expected at least one Pod to be created")
+
+			// TODO: ENABLE ONCE KATAS IS INSTALLED
+			/*
+				for _, pod := range podList.Items {
+					Expect(pod.Spec.RuntimeClassName).NotTo(BeNil(), "Expected runtimeClassName to be set")
+					Expect(*pod.Spec.RuntimeClassName).To(Equal("kata-qemu"), "Expected runtimeClassName to match 'kata-qemu'")
+				}*/
+		})
+
+		It("should create the service", func() {
+			Eventually(func() error {
+				service := &corev1.Service{}
+				return k8sClient.Get(ctx, client.ObjectKey{
+					Name:      containerDeployment.Name,
+					Namespace: containerDeployment.Spec.Namespace,
+				}, service)
+			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
+		})
+
+		It("should create the ingress", func() {
+			Eventually(func() error {
+				ingress := &networkingv1.Ingress{}
+				return k8sClient.Get(ctx, client.ObjectKey{
+					Name:      containerDeployment.Name,
+					Namespace: containerDeployment.Spec.Namespace,
+				}, ingress)
+			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
 		})
 	})
 })
+
+func deleteResource(resource client.Object, containerDeployment *v1.ContainerDeployment) {
+	resource.SetName(containerDeployment.Name)
+	resource.SetNamespace(containerDeployment.Spec.Namespace)
+	_ = k8sClient.Delete(ctx, resource)
+}

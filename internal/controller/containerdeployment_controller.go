@@ -27,7 +27,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/intstr"
-	"k8s.io/utils/pointer"
 	"k8s.io/utils/ptr"
 	"log"
 	ctrl "sigs.k8s.io/controller-runtime"
@@ -49,7 +48,6 @@ type ContainerDeploymentReconciler struct {
 // +kubebuilder:rbac:groups="",resources=services,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups="apps",resources=deployments,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups="networking.k8s.io",resources=ingresses,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups="",resources=persistentvolumeclaims,verbs=get;list;watch;create;update;patch;delete
 
 // For more details, check Reconcile and its Result here:
 // - https://pkg.go.dev/sigs.k8s.io/controller-runtime@v0.19.0/pkg/reconcile
@@ -69,27 +67,21 @@ func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.
 		return ctrl.Result{}, namespaceError
 	}
 
-	volumeClaimError := createVolumeClaim(r, containerDeployment, ctx)
-	if volumeClaimError != nil {
-		log.Println("Error creating volumeClaim")
-		return ctrl.Result{}, volumeClaimError
-	}
-
 	deploymentError := createDeployment(r, containerDeployment, ctx)
 	if deploymentError != nil {
-		log.Println("Error creating deployment")
+		log.Println("Error creating deployment: ", deploymentError.Error())
 		return ctrl.Result{}, deploymentError
 	}
 
 	backendPortName, serviceError := createService(r, containerDeployment, ctx)
 	if serviceError != nil {
-		log.Println("Error creating service")
+		log.Println("Error creating service: ", serviceError.Error())
 		return ctrl.Result{}, serviceError
 	}
 
 	ingressError := createIngress(backendPortName, r, containerDeployment, ctx)
 	if ingressError != nil {
-		log.Println("Error creating ingress")
+		log.Println("Error creating ingress: ", ingressError.Error())
 		return ctrl.Result{}, ingressError
 	}
 
@@ -157,22 +149,18 @@ func createDeployment(r *ContainerDeploymentReconciler,
 	containerDeployment containerv1.ContainerDeployment,
 	ctx context.Context,
 ) error {
-	var mounts []corev1.VolumeMount
-	if containerDeployment.Spec.Storage != nil {
-		mounts = []corev1.VolumeMount{
-			{
-				Name:      containerDeployment.Name,
-				MountPath: containerDeployment.Spec.Storage.MountPath,
-			},
-		}
+	replicas := int32(1)
+	if containerDeployment.Spec.Replicas != nil {
+		replicas = *containerDeployment.Spec.Replicas
 	}
+	var mounts []corev1.VolumeMount
 	deploy := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      containerDeployment.Name,
 			Namespace: containerDeployment.Spec.Namespace,
 		},
 		Spec: appsv1.DeploymentSpec{
-			Replicas: pointer.Int32Ptr(1),
+			Replicas: ptr.To(replicas),
 			Selector: &metav1.LabelSelector{
 				MatchLabels: map[string]string{
 					"app": containerDeployment.Name,
@@ -295,36 +283,6 @@ func createIngress(backendPortName string, r *ContainerDeploymentReconciler,
 	}
 
 	if err := r.Create(ctx, ingress); err != nil && !errors.IsAlreadyExists(err) {
-		return err
-	}
-	return nil
-}
-
-func createVolumeClaim(r *ContainerDeploymentReconciler,
-	containerDeployment containerv1.ContainerDeployment,
-	ctx context.Context) error {
-	if containerDeployment.Spec.Storage == nil {
-		return nil
-	}
-
-	volumeClaim := &corev1.PersistentVolumeClaim{
-		ObjectMeta: metav1.ObjectMeta{},
-		Spec: corev1.PersistentVolumeClaimSpec{
-			VolumeName: containerDeployment.Name,
-			AccessModes: []corev1.PersistentVolumeAccessMode{
-				corev1.ReadWriteOnce,
-			},
-			Resources: corev1.VolumeResourceRequirements{
-				Requests: map[corev1.ResourceName]resource.Quantity{
-					corev1.ResourceStorage: {
-						Format: resource.Format(containerDeployment.Spec.Storage.Size),
-					},
-				},
-			},
-		},
-	}
-
-	if err := r.Create(ctx, volumeClaim); err != nil && !errors.IsAlreadyExists(err) {
 		return err
 	}
 	return nil
