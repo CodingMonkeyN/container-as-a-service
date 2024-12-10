@@ -200,8 +200,15 @@ func createDeployment(r *ContainerDeploymentReconciler,
 		},
 	}
 
-	if err := r.Create(ctx, deploy); err != nil && !errors.IsAlreadyExists(err) {
+	var err error
+	if err = r.Create(ctx, deploy); err != nil && !errors.IsAlreadyExists(err) {
 		return err
+	}
+
+	if err != nil && errors.IsAlreadyExists(err) {
+		if updateError := r.Update(ctx, deploy); updateError != nil {
+			return updateError
+		}
 	}
 
 	return nil
@@ -228,8 +235,15 @@ func createService(r *ContainerDeploymentReconciler,
 		},
 	}
 
-	if err := r.Create(ctx, service); err != nil && !errors.IsAlreadyExists(err) {
+	var err error
+	if err = r.Create(ctx, service); err != nil && !errors.IsAlreadyExists(err) {
 		return "", err
+	}
+
+	if err != nil && errors.IsAlreadyExists(err) {
+		if updateError := r.Update(ctx, service); updateError != nil {
+			return "", updateError
+		}
 	}
 	return containerDeployment.Name, nil
 }
@@ -282,8 +296,15 @@ func createIngress(backendPortName string, r *ContainerDeploymentReconciler,
 		},
 	}
 
-	if err := r.Create(ctx, ingress); err != nil && !errors.IsAlreadyExists(err) {
+	var err error
+	if err = r.Create(ctx, ingress); err != nil && !errors.IsAlreadyExists(err) {
 		return err
+	}
+
+	if err != nil && errors.IsAlreadyExists(err) {
+		if updateError := r.Update(ctx, ingress); updateError != nil {
+			return updateError
+		}
 	}
 	return nil
 }
