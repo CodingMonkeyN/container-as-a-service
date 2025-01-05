@@ -1,0 +1,43 @@
+---
+- name: Download k3s install script
+  ansible.builtin.get_url:
+    url: https://get.k3s.io
+    dest: /tmp/k3s.sh
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Execute install script on bootstrap node
+  ansible.builtin.shell:
+    cmd:
+      "/tmp/k3s.sh \
+      --tls-san {{ ansible_host }} \
+      --cluster-init \
+      {% if debug %}--debug{% endif %}"
+  when: server_is_bootstrap_node
+
+# - name: Execute install script on bootstrap node
+#   ansible.builtin.shell:
+#     cmd:
+#       "/tmp/k3s.sh \
+#       --container-runtime-endpoint /run/containerd/containerd.sock
+#       --tls-san {{ ansible_host }} \
+#       --cluster-init \
+#       {% if debug %}--debug{% endif %}"
+#   when: server_is_bootstrap_node
+
+- name: ensure server process is up
+  ansible.builtin.systemd:
+    name: k3s
+    state: started
+  when: server_is_bootstrap_node
+
+- name: Wait for server to start
+  ansible.builtin.pause:
+    seconds: 30
+
+- name: ensure server process is up
+  ansible.builtin.systemd:
+    name: k3s
+    state: started
+  when: not server_is_bootstrap_node

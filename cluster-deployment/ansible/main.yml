@@ -1,0 +1,73 @@
+---
+- name: Setup k3s
+  hosts: servers
+  become: true
+  become_user: root
+  become_method: sudo
+  remote_user: k3suser
+  tasks:
+    - name: Install k3s server nodes
+      ansible.builtin.include_role:
+        name: k3s
+        apply:
+          tags:
+            - server
+      tags:
+        - server
+
+- name: Setup kata
+  hosts: servers
+  become: true
+  become_user: root
+  become_method: sudo
+  remote_user: k3suser
+  tasks:
+    - name: Install kata on node
+      ansible.builtin.include_role:
+        name: kata
+        apply:
+          tags:
+            - server
+      tags:
+        - server
+
+- name: Install helm on servers
+  hosts: servers
+  become: true
+  become_user: root
+  become_method: sudo
+  remote_user: k3suser
+  tasks:
+    - name: setup helm
+      ansible.builtin.include_role:
+        name: helm-install
+        apply:
+          tags:
+            - helm
+      tags:
+        - helm
+
+- name: Get kubeconfig
+  hosts: servers
+  become: true
+  become_user: root
+  become_method: sudo
+  tasks:
+    - name: slurp kubeconfig file
+      ansible.builtin.fetch:
+        src: /etc/rancher/k3s/k3s.yaml
+        dest: ./kube/
+      run_once: true
+      tags:
+        - kubeconfig
+
+    - name: Replace localhost with loadbalancer ip
+      ansible.builtin.lineinfile:
+        path: "./kube/{{ inventory_hostname }}/etc/rancher/k3s/k3s.yaml"
+        regexp: "^\\s+server: https://127\\.0\\.0\\.1:6443"
+        line: "    server: https://{{ ansible_host }}:6443"
+      run_once: true
+      become: false
+      delegate_to: localhost
+      tags:
+        - kubeconfig

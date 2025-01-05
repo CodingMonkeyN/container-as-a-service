@@ -1,0 +1,12 @@
+---
+- name: Reboot systems
+  hosts: all
+  become: true
+  become_user: root
+  become_method: sudo
+  remote_user: k3suser
+  serial: 1
+  tasks:
+    - name: update and reboot system
+      ansible.builtin.include_role:
+        name: reboot

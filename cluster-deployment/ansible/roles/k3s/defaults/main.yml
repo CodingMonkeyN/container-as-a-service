@@ -1,0 +1,3 @@
+---
+debug: false
+disabled_services: traefik
