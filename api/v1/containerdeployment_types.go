@@ -17,14 +17,14 @@ limitations under the License.
 package v1
 
 import (
+	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
 type ContainerDeploymentSpec struct {
 	Image           string            `json:"image"`
-	Namespace       string            `json:"namespace,omitempty"`
-	CPU             string            `json:"cpu,omitempty"`
-	Memory          string            `json:"memory,omitempty"`
+	CPU             resource.Quantity `json:"cpu,omitempty"`
+	Memory          resource.Quantity `json:"memory,omitempty"`
 	Port            int32             `json:"port"`
 	Replicas        *int32            `json:"replicas,omitempty"`
 	EnvironmentVars map[string]string `json:"env,omitempty"`

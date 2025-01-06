@@ -18,6 +18,7 @@ package controller
 
 import (
 	"fmt"
+	"k8s.io/apimachinery/pkg/api/resource"
 	"k8s.io/utils/ptr"
 	"time"
 
@@ -56,12 +57,15 @@ var _ = Describe("ContainerDeployment Controller", Ordered, func() {
 				Namespace: integrationTestNs.Name,
 			},
 			Spec: v1.ContainerDeploymentSpec{
-				Image:     "nginx:latest",
-				Namespace: deploymentNs.Name,
-				Port:      80,
-				Memory:    "64Mi",
-				CPU:       "250m",
-				Replicas:  ptr.To(int32(2)),
+				Image: "nginx:latest",
+				Port:  80,
+				Memory: resource.Quantity{
+					Format: "64Mi",
+				},
+				CPU: resource.Quantity{
+					Format: "250m",
+				},
+				Replicas: ptr.To(int32(2)),
 				EnvironmentVars: map[string]string{
 					"TEST_KEY": "TEST_VALUE",
 				},
@@ -83,19 +87,12 @@ var _ = Describe("ContainerDeployment Controller", Ordered, func() {
 	})
 
 	Context("When ContainerDeployment is created", func() {
-		It("should create the namespace", func() {
-			Eventually(func() error {
-				ns := &corev1.Namespace{}
-				return k8sClient.Get(ctx, client.ObjectKey{Name: containerDeployment.Spec.Namespace}, ns)
-			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
-		})
-
 		It("should create the deployment", func() {
 			Eventually(func() error {
 				deployment := &appsv1.Deployment{}
 				return k8sClient.Get(ctx, client.ObjectKey{
 					Name:      containerDeployment.Name,
-					Namespace: containerDeployment.Spec.Namespace,
+					Namespace: containerDeployment.Namespace,
 				}, deployment)
 			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
 		})
@@ -105,7 +102,7 @@ var _ = Describe("ContainerDeployment Controller", Ordered, func() {
 				deployment := &appsv1.Deployment{}
 				err := k8sClient.Get(ctx, client.ObjectKey{
 					Name:      containerDeployment.Name,
-					Namespace: containerDeployment.Spec.Namespace,
+					Namespace: containerDeployment.Namespace,
 				}, deployment)
 				if err != nil {
 					return ptr.To(int32(0))
@@ -119,13 +116,13 @@ var _ = Describe("ContainerDeployment Controller", Ordered, func() {
 			Eventually(func() error {
 				return k8sClient.Get(ctx, client.ObjectKey{
 					Name:      containerDeployment.Name,
-					Namespace: containerDeployment.Spec.Namespace,
+					Namespace: containerDeployment.Namespace,
 				}, deployment)
 			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
 
 			podList := &corev1.PodList{}
 			Eventually(func() error {
-				return k8sClient.List(ctx, podList, client.InNamespace(containerDeployment.Spec.Namespace), client.MatchingLabels(deployment.Spec.Selector.MatchLabels))
+				return k8sClient.List(ctx, podList, client.InNamespace(containerDeployment.Namespace), client.MatchingLabels(deployment.Spec.Selector.MatchLabels))
 			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
 
 			Expect(len(podList.Items)).To(BeNumerically(">", 0), "Expected at least one Pod to be created")
@@ -142,13 +139,13 @@ var _ = Describe("ContainerDeployment Controller", Ordered, func() {
 			Eventually(func() error {
 				return k8sClient.Get(ctx, client.ObjectKey{
 					Name:      containerDeployment.Name,
-					Namespace: containerDeployment.Spec.Namespace,
+					Namespace: containerDeployment.Namespace,
 				}, deployment)
 			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
 
 			podList := &corev1.PodList{}
 			Eventually(func() error {
-				return k8sClient.List(ctx, podList, client.InNamespace(containerDeployment.Spec.Namespace), client.MatchingLabels(deployment.Spec.Selector.MatchLabels))
+				return k8sClient.List(ctx, podList, client.InNamespace(containerDeployment.Namespace), client.MatchingLabels(deployment.Spec.Selector.MatchLabels))
 			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
 
 			Expect(len(podList.Items)).To(BeNumerically(">", 0), "Expected at least one Pod to be created")
@@ -189,7 +186,7 @@ var _ = Describe("ContainerDeployment Controller", Ordered, func() {
 				service := &corev1.Service{}
 				return k8sClient.Get(ctx, client.ObjectKey{
 					Name:      containerDeployment.Name,
-					Namespace: containerDeployment.Spec.Namespace,
+					Namespace: containerDeployment.Namespace,
 				}, service)
 			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
 		})
@@ -199,7 +196,7 @@ var _ = Describe("ContainerDeployment Controller", Ordered, func() {
 				ingress := &networkingv1.Ingress{}
 				return k8sClient.Get(ctx, client.ObjectKey{
 					Name:      containerDeployment.Name,
-					Namespace: containerDeployment.Spec.Namespace,
+					Namespace: containerDeployment.Namespace,
 				}, ingress)
 			}, 10*time.Second, 100*time.Millisecond).Should(Succeed())
 		})
@@ -208,6 +205,6 @@ var _ = Describe("ContainerDeployment Controller", Ordered, func() {
 
 func deleteResource(resource client.Object, containerDeployment *v1.ContainerDeployment) {
 	resource.SetName(containerDeployment.Name)
-	resource.SetNamespace(containerDeployment.Spec.Namespace)
+	resource.SetNamespace(containerDeployment.Namespace)
 	_ = k8sClient.Delete(ctx, resource)
 }

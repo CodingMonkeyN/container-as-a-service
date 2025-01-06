@@ -23,7 +23,6 @@ import (
 	corev1 "k8s.io/api/core/v1"
 	networkingv1 "k8s.io/api/networking/v1"
 	"k8s.io/apimachinery/pkg/api/errors"
-	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/apimachinery/pkg/util/intstr"
@@ -59,12 +58,6 @@ func (r *ContainerDeploymentReconciler) Reconcile(ctx context.Context, req ctrl.
 
 	if len(containerDeployment.Name) > 15 {
 		return ctrl.Result{}, errors.NewBadRequest("Name must be less than 16 characters")
-	}
-
-	namespaceError := createNamespace(r, containerDeployment, ctx)
-	if namespaceError != nil {
-		log.Println("Error creating namespace: ", namespaceError.Error())
-		return ctrl.Result{}, namespaceError
 	}
 
 	deploymentError := createDeployment(r, containerDeployment, ctx)
@@ -124,27 +117,6 @@ func overrideDefaultEnvInjections(envVars []corev1.EnvVar) []corev1.EnvVar {
 	return envVars
 }
 
-func createNamespace(r *ContainerDeploymentReconciler,
-	containerDeployment containerv1.ContainerDeployment,
-	ctx context.Context) error {
-	if containerDeployment.Spec.Namespace != "" {
-		namespace := &corev1.Namespace{
-			ObjectMeta: metav1.ObjectMeta{
-				Name: containerDeployment.Spec.Namespace,
-			},
-		}
-
-		err := r.Client.Create(ctx, namespace)
-		if err != nil && !errors.IsAlreadyExists(err) {
-			return err
-		}
-	} else {
-		containerDeployment.Spec.Namespace = "default"
-	}
-
-	return nil
-}
-
 func createDeployment(r *ContainerDeploymentReconciler,
 	containerDeployment containerv1.ContainerDeployment,
 	ctx context.Context,
@@ -157,7 +129,7 @@ func createDeployment(r *ContainerDeploymentReconciler,
 	deploy := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      containerDeployment.Name,
-			Namespace: containerDeployment.Spec.Namespace,
+			Namespace: containerDeployment.Namespace,
 		},
 		Spec: appsv1.DeploymentSpec{
 			Replicas: ptr.To(replicas),
@@ -173,7 +145,7 @@ func createDeployment(r *ContainerDeploymentReconciler,
 					},
 				},
 				Spec: corev1.PodSpec{
-					//RuntimeClassName:   ptr.To("kata-qemu"),
+					RuntimeClassName:   ptr.To("kata-qemu"),
 					EnableServiceLinks: ptr.To(false),
 					Containers: []corev1.Container{
 						{
@@ -189,8 +161,8 @@ func createDeployment(r *ContainerDeploymentReconciler,
 							Env:             convertEnvMap(containerDeployment.Spec.EnvironmentVars),
 							Resources: corev1.ResourceRequirements{
 								Limits: corev1.ResourceList{
-									corev1.ResourceCPU:    resource.MustParse(containerDeployment.Spec.CPU),
-									corev1.ResourceMemory: resource.MustParse(containerDeployment.Spec.Memory),
+									corev1.ResourceCPU:    containerDeployment.Spec.CPU,
+									corev1.ResourceMemory: containerDeployment.Spec.Memory,
 								},
 							},
 						},
@@ -220,7 +192,7 @@ func createService(r *ContainerDeploymentReconciler,
 	service := &corev1.Service{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      containerDeployment.Name,
-			Namespace: containerDeployment.Spec.Namespace,
+			Namespace: containerDeployment.Namespace,
 		},
 		Spec: corev1.ServiceSpec{
 			Type:     corev1.ServiceTypeClusterIP,
@@ -256,7 +228,7 @@ func createIngress(backendPortName string, r *ContainerDeploymentReconciler,
 	ingress := &networkingv1.Ingress{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      containerDeployment.Name,
-			Namespace: containerDeployment.Spec.Namespace,
+			Namespace: containerDeployment.Namespace,
 			Annotations: map[string]string{
 				"kubernetes.io/ingress.class":    "traefik",
 				"cert-manager.io/cluster-issuer": "lets-encrypt",
