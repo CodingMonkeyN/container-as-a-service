@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="ALL" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a8778f82-01df-447e-b6f1-009901c34411" name="Changes" comment="finish adjustments">
+      <change afterPath="$PROJECT_DIR$/Api/Contracts/ContainerDeployment.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/Models/ContainerDeploymentResponse.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/Models/PodResponse.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Api/Utils/Utils.cs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/models/container-deployment.model.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/models/pod.model.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfo.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfoInputs.cache" afterDir="false" />
+    </list>
+    <list id="f4ac63b7-cc66-4d06-b3c4-ffdb20f510af" name="Changes by flori" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="GOROOT" url="file:///usr/local/go" />
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;CodingMonkeyN&quot;
+  }
+}</component>
+  <component name="GitToolBoxStore">
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="portal" />
+                    <option name="lastUsedInstant" value="1736347582" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="main" />
+                    <option name="lastUsedInstant" value="1729433838" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
+  </component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/CodingMonkeyN/container-as-a-service.git&quot;,
+    &quot;accountId&quot;: &quot;3236060b-dff0-4916-857e-b8f1302c191b&quot;
+  }
+}</component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/go/pkg/mod/k8s.io/api@v0.31.0/core/v1/types.go" root0="SKIP_INSPECTION" />
+  </component>
+  <component name="KubernetesApiPersistence">{}</component>
+  <component name="KubernetesApiProvider">{
+  &quot;isMigrated&quot;: true
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 6
+}</component>
+  <component name="ProjectId" id="2nhhrkjHslr06uKW75TQ46dsSsd" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="false" />
+    <option name="showLibraryContents" value="true" />
+    <option name="showMembers" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Go Build.go build github.com/CodingMonkeyN/container-as-a-service.executor&quot;: &quot;Debug&quot;,
+    &quot;Go Build.go build github.com/CodingMonkeyN/container-as-a-service/cmd.executor&quot;: &quot;Debug&quot;,
+    &quot;Go Test.go test container-as-a-service.executor&quot;: &quot;Debug&quot;,
+    &quot;Go Test.go test controller.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;portal&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/CodingMonkey/Documents/Repos/container-as-a-service/kubernetes-setup/cert-manager&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/kubernetes-setup/cert-manager" />
+      <recent name="$PROJECT_DIR$/kubernetes-setup/ingress" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/config/samples" />
+      <recent name="$PROJECT_DIR$/kubernetes-setup/cert-manager/issuers" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/kubernetes-setup/cert-manager" />
+      <recent name="$PROJECT_DIR$/kubernetes-setup/ingress" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Go Build.go build github.com/CodingMonkeyN/container-as-a-service/cmd">
+    <configuration name="go build github.com/CodingMonkeyN/container-as-a-service/cmd" type="GoApplicationRunConfiguration" factoryName="Go Application" nameIsGenerated="true">
+      <module name="container-as-a-service" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <package value="github.com/CodingMonkeyN/container-as-a-service" />
+      <directory value="$PROJECT_DIR$/cmd" />
+      <filePath value="$PROJECT_DIR$" />
+      <method v="2" />
+    </configuration>
+    <configuration name="go test controller" type="GoTestRunConfiguration" factoryName="Go Test" nameIsGenerated="true">
+      <module name="container-as-a-service" />
+      <working_directory value="$PROJECT_DIR$" />
+      <kind value="DIRECTORY" />
+      <package value="github.com/CodingMonkeyN/container-as-a-service" />
+      <directory value="$PROJECT_DIR$/internal/controller" />
+      <filePath value="$PROJECT_DIR$" />
+      <framework value="gotest" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Go Build.go build github.com/CodingMonkeyN/container-as-a-service/cmd" />
+      <item itemvalue="Go Test.go test controller" />
+    </list>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-gosdk-5df93f7ad4aa-df9ad98b711f-org.jetbrains.plugins.go.sharedIndexes.bundled-GO-242.23339.24" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-GO-242.23339.24" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="first commit" />
+    <MESSAGE value="bissel getestet" />
+    <MESSAGE value="rename demo deployment" />
+    <MESSAGE value="ingress setup" />
+    <MESSAGE value="add pvc" />
+    <MESSAGE value="add week2 demo" />
+    <MESSAGE value="add cert-manager setup" />
+    <MESSAGE value="finish cert-manager and ingress setup" />
+    <MESSAGE value="prepare demo" />
+    <MESSAGE value="disable service links" />
+    <MESSAGE value="override default kubernetes environments" />
+    <MESSAGE value="add config for min and max env" />
+    <MESSAGE value="change pull policy" />
+    <MESSAGE value="fix build to always use linux/amd64" />
+    <MESSAGE value="reactivate runtime class" />
+    <MESSAGE value="try envtest" />
+    <MESSAGE value="add missing cluster role configs" />
+    <MESSAGE value="add integration tests" />
+    <MESSAGE value="add test to check the correct envs" />
+    <MESSAGE value="update resources when doing an update" />
+    <MESSAGE value="adjust configuration" />
+    <MESSAGE value="finish adjustments" />
+    <option name="LAST_COMMIT_MESSAGE" value="finish adjustments" />
+  </component>
+  <component name="VgoProject">
+    <settings-migrated>true</settings-migrated>
+  </component>
+</project>

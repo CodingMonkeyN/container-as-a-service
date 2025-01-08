@@ -1,0 +1,52 @@
+<h2 mat-dialog-title>{{ data == undefined ? 'Create Deployment' : 'Update Deployment' }}</h2>
+<mat-dialog-content>
+  <form [formGroup]="form" class="flex flex-col gap-4">
+    <div class="flex gap-4">
+      <mat-form-field>
+        <mat-label>Namespace</mat-label>
+        <mat-select formControlName="namespace">
+          @for (namespace of namespaceOptions(); track namespace) {
+            <mat-option [value]="namespace">{{ namespace }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input matInput maxlength="15" formControlName="name" placeholder="Deployment name"/>
+        <mat-hint align="end">Max 15 characters</mat-hint>
+      </mat-form-field>
+    </div>
+
+    <div class="flex gap-4">
+      <mat-form-field>
+        <mat-label>Image</mat-label>
+        <input formControlName="image" matInput/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Replicas</mat-label>
+        <input formControlName="replicas" type="number" matInput/>
+      </mat-form-field>
+    </div>
+
+    <div class="flex gap-4">
+      <mat-form-field>
+        <mat-label>Cpu</mat-label>
+        <input placeholder="250m" formControlName="cpu" matInput/>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Memory</mat-label>
+        <input placeholder="64Mi" formControlName="memory" matInput/>
+      </mat-form-field>
+    </div>
+    <mat-form-field>
+      <mat-label>Port</mat-label>
+      <input formControlName="port" type="number" matInput/>
+    </mat-form-field>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button [disabled]="!form.valid" mat-flat-button (click)="save()">Deploy</button>
+</mat-dialog-actions>
