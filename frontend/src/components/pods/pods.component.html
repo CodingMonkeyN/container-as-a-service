@@ -1,0 +1,44 @@
+<mat-card class="flex-1 m-4">
+  <mat-card-header class="w-full justify-between">
+    <mat-card-title>Pods</mat-card-title>
+    <button mat-icon-button (click)="refresh()">
+      <mat-icon>refresh</mat-icon>
+    </button>
+  </mat-card-header>
+  <mat-card-content>
+    <table mat-table [dataSource]="dataSource()" class="mat-elevation-z8 bg-transparent">
+      <ng-container matColumnDef="namespace">
+        <th mat-header-cell *matHeaderCellDef> Namespace</th>
+        <td mat-cell *matCellDef="let element"> {{ element.namespace }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name</th>
+        <td mat-cell *matCellDef="let element"> {{ element.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="cpu">
+        <th mat-header-cell *matHeaderCellDef> Cpu</th>
+        <td mat-cell *matCellDef="let element"> {{ element.cpu }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="memory">
+        <th mat-header-cell *matHeaderCellDef> Memory</th>
+        <td mat-cell *matCellDef="let element"> {{ element.memory }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="ready">
+        <th mat-header-cell *matHeaderCellDef> Ready</th>
+        <td mat-cell *matCellDef="let element"> {{ element.ready }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef> Status</th>
+        <td mat-cell *matCellDef="let element"> {{ element.status }}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+
+  </mat-card-content>
+</mat-card>
