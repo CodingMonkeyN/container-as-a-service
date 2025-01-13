@@ -1,8 +1,8 @@
 apiVersion: apps.com.coding-monkey/v1
 kind: ContainerDeployment
 metadata:
-  name: ingress
-  namespace: ingress
+  name: ingress3
+  namespace: ingress3
 spec:
   image: nginx:latest
   memory: "64Mi"

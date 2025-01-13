@@ -129,7 +129,8 @@ app.MapGet("/containerDeployments", async (IKubernetes kubeClient) =>
         Memory = item.Spec.Memory,
         Image = item.Spec.Image,
         Replicas = item.Spec.Replicas,
-        Port = item.Spec.Port
+        Port = item.Spec.Port,
+        EnvironmentVariables = item.Spec.Env
     }));
 });
 

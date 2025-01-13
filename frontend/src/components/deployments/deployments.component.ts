@@ -63,7 +63,7 @@ export class DeploymentsComponent {
   }
 
   editDeployment(deployment: ContainerDeployment) {
-    const ref = this.dialog.open(CreateDeploymentDialogComponent, {data: deployment});
+    const ref = this.dialog.open(CreateDeploymentDialogComponent, {data: deployment,});
     ref.afterClosed().subscribe(result => {
       if (result === true) {
         this.#refresh.next();

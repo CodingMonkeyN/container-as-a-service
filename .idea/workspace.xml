@@ -5,15 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a8778f82-01df-447e-b6f1-009901c34411" name="Changes" comment="finish adjustments">
-      <change afterPath="$PROJECT_DIR$/Api/Contracts/ContainerDeployment.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Api/Models/ContainerDeploymentResponse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Api/Models/PodResponse.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Api/Utils/Utils.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/models/container-deployment.model.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/models/pod.model.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/pod-logs/pod-logs.component.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/pod-logs/pod-logs.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/Contracts/ContainerDeployment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Contracts/ContainerDeployment.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfoInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Api/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/create-deployment-dialog/create-deployment-dialog.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-deployment-dialog/create-deployment-dialog.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/create-deployment-dialog/create-deployment-dialog.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-deployment-dialog/create-deployment-dialog.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/deployments/deployments.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/deployments/deployments.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/pods/pods.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pods/pods.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/pods/pods.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pods/pods.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/models/container-deployment.model.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/models/container-deployment.model.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/services/api.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/api.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kubernetes/config/samples/hello-world.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/kubernetes/config/samples/hello-world.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kubernetes/config/samples/ingress.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/kubernetes/config/samples/ingress.yaml" afterDir="false" />
     </list>
     <list id="f4ac63b7-cc66-4d06-b3c4-ffdb20f510af" name="Changes by flori" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -85,27 +94,27 @@
     <option name="showLibraryContents" value="true" />
     <option name="showMembers" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Go Build.go build github.com/CodingMonkeyN/container-as-a-service.executor&quot;: &quot;Debug&quot;,
-    &quot;Go Build.go build github.com/CodingMonkeyN/container-as-a-service/cmd.executor&quot;: &quot;Debug&quot;,
-    &quot;Go Test.go test container-as-a-service.executor&quot;: &quot;Debug&quot;,
-    &quot;Go Test.go test controller.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.go.modules.go.list.on.any.changes.was.set&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;portal&quot;,
-    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
-    &quot;go.sdk.automatically.set&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/CodingMonkey/Documents/Repos/container-as-a-service/kubernetes-setup/cert-manager&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;actions.on.save&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Go Build.go build github.com/CodingMonkeyN/container-as-a-service.executor": "Debug",
+    "Go Build.go build github.com/CodingMonkeyN/container-as-a-service/cmd.executor": "Debug",
+    "Go Test.go test container-as-a-service.executor": "Debug",
+    "Go Test.go test controller.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.go.formatter.settings.were.checked": "true",
+    "RunOnceActivity.go.migrated.go.modules.settings": "true",
+    "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "portal",
+    "go.import.settings.migrated": "true",
+    "go.sdk.automatically.set": "true",
+    "last_opened_file_path": "/Users/CodingMonkey",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "actions.on.save"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/kubernetes-setup/cert-manager" />
@@ -125,7 +134,7 @@
       <working_directory value="$PROJECT_DIR$" />
       <kind value="DIRECTORY" />
       <package value="github.com/CodingMonkeyN/container-as-a-service" />
-      <directory value="$PROJECT_DIR$/cmd" />
+      <directory value="$PROJECT_DIR$/kubernetes/cmd" />
       <filePath value="$PROJECT_DIR$" />
       <method v="2" />
     </configuration>
@@ -156,6 +165,17 @@
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="Vcs.Log.History.Properties">
+    <option name="COLUMN_ID_ORDER">
+      <list>
+        <option value="Default.Root" />
+        <option value="Default.Author" />
+        <option value="Default.Date" />
+        <option value="Default.Subject" />
+        <option value="GitHub.CommitStatus" />
+      </list>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="first commit" />
     <MESSAGE value="bissel getestet" />
@@ -183,5 +203,16 @@
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/kubernetes/internal/controller/containerdeployment_controller.go</url>
+          <line>223</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -1,0 +1,27 @@
+<mat-card class="flex-1 overflow-hidden">
+  <mat-card-header>
+    <mat-card-title>
+      <div class="flex items-center w-full justify-between">
+        <div class="flex items-center gap-4">
+          <button mat-icon-button (click)="back()">
+            <mat-icon>arrow_back</mat-icon>
+          </button>
+          <p>
+            Container:  {{ containerName }}
+          </p>
+        </div>
+        <button mat-icon-button (click)="refresh.next(undefined)">
+          <mat-icon>refresh</mat-icon>
+        </button>
+      </div>
+    </mat-card-title>
+    <mat-card-subtitle>
+      Namespace: {{ namespace }}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="flex-1 overflow-auto">
+    <span class="whitespace-pre" [innerHTML]="logs()"></span>
+  </mat-card-content>
+</mat-card>
+
+

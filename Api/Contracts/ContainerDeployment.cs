@@ -20,6 +20,7 @@ public class ContainerDeploymentSpec
     public required string Image { get; init; }
     public required int Replicas { get; init; }
     public required int Port { get; init; }
+    public Dictionary<string, string>? Env { get; init; }
 }
 
 public class ContainerMetadata

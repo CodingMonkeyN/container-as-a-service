@@ -24,6 +24,27 @@ export class ApiService {
     return this.http.get<Pod[]>(this.baseUrl + 'pods');
   }
 
+  getLogs(namespace: string, containerName: string): Observable<string> {
+    return new Observable<string>(observer => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', this.baseUrl + 'logs/' + namespace + '/' + containerName, true);
+      xhr.responseType = 'arraybuffer';
+
+      xhr.onload = () => {
+        if (xhr.status === 200) {
+          const decodedLogs = new TextDecoder('utf-8').decode(xhr.response); // Wandelt Binärdaten in Text um
+          console.log(decodedLogs)
+          observer.next(decodedLogs);
+        }
+      };
+
+      xhr.onerror = () => observer.error('Fehler beim Laden der Logs.');
+      xhr.send();
+
+      return () => xhr.abort();
+    });
+  }
+
   createDeployment(request: ContainerDeployment): Promise<boolean> {
     return firstValueFrom(this.http.post(this.baseUrl + 'createDeployment', request).pipe(
       map(() => true),

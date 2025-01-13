@@ -5,4 +5,5 @@ export interface ContainerDeployment {
   cpu: string;
   memory: string;
   replicas: number;
+  environmentVariables: Record<string, string>;
 }
