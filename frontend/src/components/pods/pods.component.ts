@@ -15,6 +15,7 @@ import {MatButton, MatIconButton} from '@angular/material/button';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
 import {BehaviorSubject, switchMap} from 'rxjs';
 import {MatIcon} from '@angular/material/icon';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-pods',
@@ -35,7 +36,8 @@ import {MatIcon} from '@angular/material/icon';
     MatCardTitle,
     MatCardContent,
     MatIcon,
-    MatIconButton
+    MatIconButton,
+    RouterLink
   ],
   templateUrl: './pods.component.html',
 })
@@ -45,6 +47,7 @@ export class PodsComponent {
   #refresh = new BehaviorSubject<void>(undefined)
   displayedColumns: string[] = ['namespace', 'name', 'cpu', 'memory', 'ready', 'status',];
   private readonly apiService = inject(ApiService);
+  private readonly router = inject(Router);
   dataSource: Signal<Pod[]>;
 
   constructor() {
@@ -55,5 +58,9 @@ export class PodsComponent {
 
   refresh(): void {
     this.#refresh.next(undefined);
+  }
+
+  showLogs(pod: Pod) {
+    void this.router.navigate(['pods', 'logs', pod.namespace, pod.name])
   }
 }

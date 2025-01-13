@@ -7,5 +7,4 @@ spec:
   namespace: hello-world
   memory: "64Mi"
   cpu: "250m"
-  exposed-port: 80
-  application-port: 3000
+  port: 80
