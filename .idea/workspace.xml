@@ -5,24 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a8778f82-01df-447e-b6f1-009901c34411" name="Changes" comment="finish adjustments">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/pod-logs/pod-logs.component.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/pod-logs/pod-logs.component.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/Contracts/ContainerDeployment.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Contracts/ContainerDeployment.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/Debug/net9.0/Api.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Api/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/Api/obj/rider.project.model.nuget.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/app/app.routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/create-deployment-dialog/create-deployment-dialog.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-deployment-dialog/create-deployment-dialog.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/create-deployment-dialog/create-deployment-dialog.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/create-deployment-dialog/create-deployment-dialog.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/deployments/deployments.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/deployments/deployments.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pods/pods.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pods/pods.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/pods/pods.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/pods/pods.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/models/container-deployment.model.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/models/container-deployment.model.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/services/api.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/api.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kubernetes/config/samples/hello-world.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/kubernetes/config/samples/hello-world.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/kubernetes/config/samples/ingress.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/kubernetes/config/samples/ingress.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/kubernetes/internal/controller/containerdeployment_controller.go" beforeDir="false" afterPath="$PROJECT_DIR$/kubernetes/internal/controller/containerdeployment_controller.go" afterDir="false" />
     </list>
     <list id="f4ac63b7-cc66-4d06-b3c4-ffdb20f510af" name="Changes by flori" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -34,7 +20,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="portal" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -54,12 +40,12 @@
               <option name="branches">
                 <list>
                   <RecentBranch>
-                    <option name="branchName" value="portal" />
-                    <option name="lastUsedInstant" value="1736347582" />
+                    <option name="branchName" value="main" />
+                    <option name="lastUsedInstant" value="1736857724" />
                   </RecentBranch>
                   <RecentBranch>
-                    <option name="branchName" value="main" />
-                    <option name="lastUsedInstant" value="1729433838" />
+                    <option name="branchName" value="portal" />
+                    <option name="lastUsedInstant" value="1736347582" />
                   </RecentBranch>
                 </list>
               </option>
@@ -105,7 +91,7 @@
     "RunOnceActivity.go.migrated.go.modules.settings": "true",
     "RunOnceActivity.go.modules.go.list.on.any.changes.was.set": "true",
     "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "portal",
+    "git-widget-placeholder": "main",
     "go.import.settings.migrated": "true",
     "go.sdk.automatically.set": "true",
     "last_opened_file_path": "/Users/CodingMonkey",
@@ -203,16 +189,5 @@
   </component>
   <component name="VgoProject">
     <settings-migrated>true</settings-migrated>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/kubernetes/internal/controller/containerdeployment_controller.go</url>
-          <line>223</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

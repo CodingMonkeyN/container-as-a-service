@@ -200,7 +200,7 @@ func createService(r *ContainerDeploymentReconciler,
 			Ports: []corev1.ServicePort{
 				{
 					Name:       containerDeployment.Name,
-					Port:       containerDeployment.Spec.Port,
+					Port:       80,
 					TargetPort: intstr.FromInt32(containerDeployment.Spec.Port),
 				},
 			},
