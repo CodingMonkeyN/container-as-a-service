@@ -5,4 +5,4 @@ kind: Kustomization
 images:
 - name: controller
   newName: nightdeath/container-as-a-service
-  newTag: "1.11"
+  newTag: "1.12"
